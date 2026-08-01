@@ -1,12 +1,12 @@
 # Product Requirements Document (PRD)
 
-| Field            | Value                                                                                                              |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
-| **Product**      | Jabodetabek Offer Stress-Test                                                                                      |
-| **Repo**         | `relocation-maps-jakarta`                                                                                          |
-| **Status**       | MVP shipped (client SPA); validation interviews 0/15                                                               |
-| **Owner**        | Founder                                                                                                            |
-| **Last updated** | 2026-08-01                                                                                                         |
+| Field            | Value                                                                                                                                                                                                |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Product**      | Jabodetabek Offer Stress-Test                                                                                                                                                                        |
+| **Repo**         | `relocation-maps-jakarta`                                                                                                                                                                            |
+| **Status**       | MVP shipped (client SPA); validation interviews 0/15                                                                                                                                                 |
+| **Owner**        | Founder                                                                                                                                                                                              |
+| **Last updated** | 2026-08-01                                                                                                                                                                                           |
 | **Related docs** | [INDEX.md](./INDEX.md), [PRODUCT.md](./PRODUCT.md), [RFC-001-planner.md](./RFC-001-planner.md), [SDLC.md](./SDLC.md), [TDD.md](./TDD.md), [VALIDATION.md](./VALIDATION.md), [CURSOR.md](./CURSOR.md) |
 
 ---
@@ -129,16 +129,16 @@ Open app
 
 ### 6.3 Commute modes and computation
 
-| ID  | Requirement                                                                                                                                   | Priority |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| F12 | Road modes (motorcycle, ojek, car) via OSRM driving routes                                                                                    | Must     |
-| F13 | Apply peak road factor (×1.45) to road and TransJakarta segments; not to KRL/MRT/LRT/walk                                                     | Must     |
-| F14 | P80 ≈ P50 × 1.4 for road-mode summaries                                                                                                       | Must     |
-| F15 | Monthly = round-trip × WFO days × 4.33 weeks                                                                                                  | Must     |
-| F16 | **Best price mix**: see [RFC-001](./RFC-001-planner.md) — same-line board/alight + walk/ojek last mile; up to 3 plans (price / time / balance) | Must |
-| F17 | **Transit only**: unlocked when both pins are ≤1.2 km from known stops; walk-access itinerary (no ojek feeders)               | Must |
-| F18 | Heuristic fares (Gojek-like + JakLingko-style) — clearly framed as estimates                                                                  | Must     |
-| F19 | OSRM failure fallback (straight-line ~22 km/h proxy)                                                                                          | Should   |
+| ID  | Requirement                                                                                                                                    | Priority |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| F12 | Road modes (motorcycle, ojek, car) via OSRM driving routes                                                                                     | Must     |
+| F13 | Apply peak road factor (×1.45) to road and TransJakarta segments; not to KRL/MRT/LRT/walk                                                      | Must     |
+| F14 | P80 ≈ P50 × 1.4 for road-mode summaries                                                                                                        | Must     |
+| F15 | Monthly = round-trip × WFO days × 4.33 weeks                                                                                                   | Must     |
+| F16 | **Best price mix**: see [RFC-001](./RFC-001-planner.md) — same-line board/alight + walk/ojek last mile; up to 3 plans (price / time / balance) | Must     |
+| F17 | **Transit only**: unlocked when both pins are ≤1.2 km from known stops; walk-access itinerary (no ojek feeders)                                | Must     |
+| F18 | Heuristic fares (Gojek-like + JakLingko-style) — clearly framed as estimates                                                                   | Must     |
+| F19 | OSRM failure fallback (straight-line ~22 km/h proxy)                                                                                           | Should   |
 
 ### 6.4 Results and export
 
@@ -146,7 +146,7 @@ Open app
 | --- | ----------------------------------------------------------------------------------------------------- | -------- |
 | F20 | Ranked home comparison: P50/P80 one-way, monthly hours, transport day/month, rent, total, % of salary | Must     |
 | F21 | Path detail / itinerary log for selected plan                                                         | Must     |
-| F22 | Export decision brief as downloadable plain-text (`.txt`) brief                                         | Must     |
+| F22 | Export decision brief as downloadable plain-text (`.txt`) brief                                       | Must     |
 | F23 | In-UI caveats that numbers are bands/heuristics, not live Grab/Google ETAs                            | Must     |
 
 ### 6.5 Explicitly out of scope for this release
@@ -165,13 +165,13 @@ Open app
 
 Product truth is framed as **decision support bands**, not navigation:
 
-| Topic           | Rule                                                                           |
-| --------------- | ------------------------------------------------------------------------------ |
-| Time            | Report P50 and P80 peak one-way minutes                                        |
-| Cost            | Heuristic IDR day/month — not live ride-hailing quotes                         |
-| Traffic         | Road / TJ ×1.45 peak factor; rail/walk unfactored                              |
+| Topic           | Rule                                                                                                                |
+| --------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Time            | Report P50 and P80 peak one-way minutes                                                                             |
+| Cost            | Heuristic IDR day/month — not live ride-hailing quotes                                                              |
+| Traffic         | Road / TJ ×1.45 peak factor; rail/walk unfactored                                                                   |
 | Transit planner | Static GeoJSON + proximity board/alight + same-line last mile; real walk transfers only — not a full schedule graph |
-| Marketing       | Do not claim live schedules or Google/Grab-competitive ETAs                                                          |
+| Marketing       | Do not claim live schedules or Google/Grab-competitive ETAs                                                         |
 
 Validation gate: complete **15–20 interviews** per [VALIDATION.md](./VALIDATION.md) before treating numbers as product truth. Kill/pivot criteria live in that doc.
 
@@ -207,12 +207,12 @@ Validation gate: complete **15–20 interviews** per [VALIDATION.md](./VALIDATIO
 
 ### Layout (single page)
 
-| Region       | Role                                                                                  |
-| ------------ | ------------------------------------------------------------------------------------- |
-| Left sidebar | Scenario panel: pin step, editors, presets, mode, salary, hybrid days, brief metadata |
-| Main map     | Pins, routes, optional PT overlays, click-to-place                                    |
-| Map chrome   | Legend, placement step, PT layer toggles                                              |
-| Below map    | Results board, path detail, export                                                    |
+| Region       | Role                                                                                        |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| Left sidebar | Scenario panel: pin step, office editor, presets, mode, salary, hybrid days, brief metadata |
+| Main map     | Pins, routes, optional PT overlays, click-to-place                                          |
+| Map chrome   | Legend, placement step, PT layer toggles                                                    |
+| Below map    | Results board with per-home editors (label, lat/lng, rent, remove), path detail, export     |
 
 ### UX principles
 
@@ -225,18 +225,18 @@ Validation gate: complete **15–20 interviews** per [VALIDATION.md](./VALIDATIO
 
 ## 10. Technical requirements
 
-| Layer        | Choice                                  |
-| ------------ | --------------------------------------- |
-| App          | React 19 + TypeScript, Vite 8           |
-| UI           | shadcn/ui (Radix) + Tailwind CSS        |
+| Layer        | Choice                                    |
+| ------------ | ----------------------------------------- |
+| App          | React 19 + TypeScript, Vite 8             |
+| UI           | shadcn/ui (Radix) + Tailwind CSS          |
 | Maps         | mapcn (MapLibre GL), CARTO Positron tiles |
-| Road routing | Public OSRM (`router.project-osrm.org`) |
-| Transit      | Static GeoJSON; client-side planners    |
-| Backend      | None (pure SPA)                         |
-| Auth / DB    | None                                    |
-| Env vars     | None required                           |
-| Deploy       | Static host of `vite build` → `dist/`   |
-| Lint         | oxlint                                  |
+| Road routing | Public OSRM (`router.project-osrm.org`)   |
+| Transit      | Static GeoJSON; client-side planners      |
+| Backend      | None (pure SPA)                           |
+| Auth / DB    | None                                      |
+| Env vars     | None required                             |
+| Deploy       | Static host of `vite build` → `dist/`     |
+| Lint         | oxlint                                    |
 
 ### Constraints
 
@@ -273,13 +273,13 @@ Do not start B2B sales before consumer usage and corridor accuracy are validated
 
 ## 13. Risks
 
-| Risk                                               | Mitigation                                                      |
-| -------------------------------------------------- | --------------------------------------------------------------- |
-| Users distrust heuristic fares/times               | Clear caveats; P50/P80 framing; interview for distrust triggers |
-| Public OSRM downtime                               | Straight-line fallback; consider self-hosted OSRM later         |
+| Risk                                               | Mitigation                                                                                                        |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Users distrust heuristic fares/times               | Clear caveats; P50/P80 framing; interview for distrust triggers                                                   |
+| Public OSRM downtime                               | Straight-line fallback; consider self-hosted OSRM later                                                           |
 | Transit itineraries feel “wrong” vs real transfers | Same-line last mile preferred; transfers only at co-located stops (≤600 m walk); expand catalog; do not overclaim |
-| Building before product truth                      | Gate on 15–20 interviews; kill criteria in VALIDATION.md        |
-| Scope creep into marketplace / AI chat             | Explicit non-goals in this PRD and PRODUCT.md                   |
+| Building before product truth                      | Gate on 15–20 interviews; kill criteria in VALIDATION.md                                                          |
+| Scope creep into marketplace / AI chat             | Explicit non-goals in this PRD and PRODUCT.md                                                                     |
 
 ---
 
@@ -304,17 +304,17 @@ Normative constants (peak factors, radii, speeds, ranking bands, monthly formula
 
 Quick reference for product readers:
 
-| Constant | Value |
-| --- | --- |
-| Default salary | Rp 12,000,000 / month |
-| Default hybrid days | 3 |
-| Peak road factor | 1.45 |
-| P80 factor (road) | 1.4 × P50 |
-| Weeks / month | 4.33 |
-| Walk / transit unlock | ≤ 1.2 km to stop |
-| Ojek feeder | ≤ 8 km |
-| Interchange max walk | 600 m |
-| Max homes | 4 |
+| Constant              | Value                 |
+| --------------------- | --------------------- |
+| Default salary        | Rp 12,000,000 / month |
+| Default hybrid days   | 3                     |
+| Peak road factor      | 1.45                  |
+| P80 factor (road)     | 1.4 × P50             |
+| Weeks / month         | 4.33                  |
+| Walk / transit unlock | ≤ 1.2 km to stop      |
+| Ojek feeder           | ≤ 8 km                |
+| Interchange max walk  | 600 m                 |
+| Max homes             | 4                     |
 
 ---
 

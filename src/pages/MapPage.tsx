@@ -71,6 +71,8 @@ export function MapPage() {
   const compareGen = useRef(0)
   const selectedHomeIdRef = useRef<string | null>(null)
   selectedHomeIdRef.current = selectedHomeId
+  const resultsRef = useRef<HTMLElement>(null)
+  const lastFocusedHomesKey = useRef("")
 
   useEffect(() => {
     loadTransitCatalog()
@@ -80,6 +82,18 @@ export function MapPage() {
       )
   }, [])
 
+  // After new home placement finishes computing, focus the results board
+  useEffect(() => {
+    if (computing || ranked.length === 0) return
+    const key = homes.map((h) => `${h.id}:${h.lat.toFixed(5)},${h.lng.toFixed(5)}`).join("|")
+    if (!key || key === lastFocusedHomesKey.current) return
+    lastFocusedHomesKey.current = key
+    const el = resultsRef.current
+    if (!el) return
+    el.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    el.focus({ preventScroll: true })
+  }, [computing, ranked, homes])
+
   // Auto-compute whenever office + homes (and mode/inputs) change
   useEffect(() => {
     if (!office || homes.length === 0 || transit.length === 0) {
@@ -87,6 +101,7 @@ export function MapPage() {
       setSelectedPlan(null)
       setSelectedHomeId(null)
       setComputing(false)
+      lastFocusedHomesKey.current = ""
       return
     }
 
@@ -344,85 +359,6 @@ export function MapPage() {
             </div>
           )}
 
-          {homes.map((h, i) => (
-            <div key={h.id} className="space-y-1 rounded-md border p-2">
-              <div className="flex items-center justify-between">
-                <Label>{h.label}</Label>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  type="button"
-                  onClick={() =>
-                    setHomes((prev) => prev.filter((x) => x.id !== h.id))
-                  }
-                >
-                  Remove
-                </Button>
-              </div>
-              <Input
-                value={h.label}
-                onChange={(e) =>
-                  setHomes((prev) =>
-                    prev.map((x) =>
-                      x.id === h.id ? { ...x, label: e.target.value } : x,
-                    ),
-                  )
-                }
-              />
-              <div className="flex gap-1">
-                <Input
-                  type="number"
-                  step="any"
-                  value={h.lat}
-                  onChange={(e) =>
-                    setHomes((prev) =>
-                      prev.map((x) =>
-                        x.id === h.id
-                          ? { ...x, lat: Number(e.target.value) }
-                          : x,
-                      ),
-                    )
-                  }
-                />
-                <Input
-                  type="number"
-                  step="any"
-                  value={h.lng}
-                  onChange={(e) =>
-                    setHomes((prev) =>
-                      prev.map((x) =>
-                        x.id === h.id
-                          ? { ...x, lng: Number(e.target.value) }
-                          : x,
-                      ),
-                    )
-                  }
-                />
-              </div>
-              <Label className="text-xs">Rent / mo (optional)</Label>
-              <Input
-                type="number"
-                value={h.rentIdr ?? ""}
-                placeholder="0"
-                onChange={(e) =>
-                  setHomes((prev) =>
-                    prev.map((x) =>
-                      x.id === h.id
-                        ? {
-                            ...x,
-                            rentIdr: e.target.value
-                              ? Number(e.target.value)
-                              : undefined,
-                          }
-                        : x,
-                    ),
-                  )
-                }
-              />
-              <span className="text-muted-foreground text-xs">#{i + 1}</span>
-            </div>
-          ))}
-
           <Separator />
 
           <div className="space-y-1">
@@ -531,7 +467,11 @@ export function MapPage() {
             </div>
           </div>
 
-          <section className="border-border max-h-[40%] overflow-y-auto border-t p-3">
+          <section
+            ref={resultsRef}
+            tabIndex={-1}
+            className="border-border max-h-[40%] overflow-y-auto border-t p-3 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
               <h2 className="font-medium">Results</h2>
               <div className="flex gap-2">
@@ -566,38 +506,155 @@ export function MapPage() {
                       <th className="p-1">P50 / P80</th>
                       <th className="p-1">Mo. hours</th>
                       <th className="p-1">Transport</th>
-                      <th className="p-1">Rent</th>
+                      <th className="p-1">Rent / mo</th>
                       <th className="p-1">Total</th>
                       <th className="p-1">% salary</th>
+                      <th className="p-1" />
                     </tr>
                   </thead>
                   <tbody>
-                    {ranked.map((r) => (
-                      <tr
-                        key={r.home.id}
-                        className={`hover:bg-muted/50 cursor-pointer border-b ${
-                          selectedHomeId === r.home.id ? "bg-muted" : ""
-                        }`}
-                        onClick={() => {
-                          setSelectedHomeId(r.home.id)
-                          setSelectedPlan(r.primary)
-                        }}
-                      >
-                        <td className="p-1 font-medium">{r.home.label}</td>
-                        <td className="p-1">
-                          {r.primary.p50Minutes} / {r.primary.p80Minutes} min
-                        </td>
-                        <td className="p-1">{r.primary.monthlyHours}</td>
-                        <td className="p-1">
-                          {formatIdr(r.primary.monthlyCostIdr)}
-                        </td>
-                        <td className="p-1">
-                          {r.rentIdr ? formatIdr(r.rentIdr) : "—"}
-                        </td>
-                        <td className="p-1">{formatIdr(r.totalMonthlyIdr)}</td>
-                        <td className="p-1">{r.pctSalary.toFixed(1)}%</td>
-                      </tr>
-                    ))}
+                    {ranked.map((r, i) => {
+                      const home = homes.find((h) => h.id === r.home.id) ?? r.home
+                      return (
+                        <tr
+                          key={r.home.id}
+                          className={`hover:bg-muted/50 cursor-pointer border-b ${
+                            selectedHomeId === r.home.id ? "bg-muted" : ""
+                          }`}
+                          onClick={() => {
+                            setSelectedHomeId(r.home.id)
+                            setSelectedPlan(r.primary)
+                            resultsRef.current?.focus({ preventScroll: true })
+                          }}
+                        >
+                          <td className="p-1 align-top">
+                            <div
+                              className="space-y-1"
+                              onClick={(e) => e.stopPropagation()}
+                              onKeyDown={(e) => e.stopPropagation()}
+                            >
+                              <div className="text-muted-foreground text-[10px]">
+                                #{i + 1}
+                              </div>
+                              <Input
+                                className="h-7 min-w-28 text-xs font-medium"
+                                value={home.label}
+                                aria-label={`Home ${i + 1} label`}
+                                onChange={(e) =>
+                                  setHomes((prev) =>
+                                    prev.map((x) =>
+                                      x.id === home.id
+                                        ? { ...x, label: e.target.value }
+                                        : x,
+                                    ),
+                                  )
+                                }
+                              />
+                              <div className="flex gap-1">
+                                <Input
+                                  className="h-7 text-xs"
+                                  type="number"
+                                  step="any"
+                                  value={home.lat}
+                                  aria-label={`${home.label} latitude`}
+                                  onChange={(e) =>
+                                    setHomes((prev) =>
+                                      prev.map((x) =>
+                                        x.id === home.id
+                                          ? {
+                                              ...x,
+                                              lat: Number(e.target.value),
+                                            }
+                                          : x,
+                                      ),
+                                    )
+                                  }
+                                />
+                                <Input
+                                  className="h-7 text-xs"
+                                  type="number"
+                                  step="any"
+                                  value={home.lng}
+                                  aria-label={`${home.label} longitude`}
+                                  onChange={(e) =>
+                                    setHomes((prev) =>
+                                      prev.map((x) =>
+                                        x.id === home.id
+                                          ? {
+                                              ...x,
+                                              lng: Number(e.target.value),
+                                            }
+                                          : x,
+                                      ),
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </td>
+                          <td className="p-1 align-middle">
+                            {r.primary.p50Minutes} / {r.primary.p80Minutes} min
+                          </td>
+                          <td className="p-1 align-middle">
+                            {r.primary.monthlyHours}
+                          </td>
+                          <td className="p-1 align-middle">
+                            {formatIdr(r.primary.monthlyCostIdr)}
+                          </td>
+                          <td
+                            className="p-1 align-middle"
+                            onClick={(e) => e.stopPropagation()}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          >
+                            <Input
+                              className="h-7 w-28 text-xs"
+                              type="number"
+                              value={home.rentIdr ?? ""}
+                              placeholder="optional"
+                              aria-label={`${home.label} rent per month`}
+                              onChange={(e) =>
+                                setHomes((prev) =>
+                                  prev.map((x) =>
+                                    x.id === home.id
+                                      ? {
+                                          ...x,
+                                          rentIdr: e.target.value
+                                            ? Number(e.target.value)
+                                            : undefined,
+                                        }
+                                      : x,
+                                  ),
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="p-1 align-middle">
+                            {formatIdr(r.totalMonthlyIdr)}
+                          </td>
+                          <td className="p-1 align-middle">
+                            {r.pctSalary.toFixed(1)}%
+                          </td>
+                          <td
+                            className="p-1 align-middle"
+                            onClick={(e) => e.stopPropagation()}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          >
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              type="button"
+                              onClick={() =>
+                                setHomes((prev) =>
+                                  prev.filter((x) => x.id !== home.id),
+                                )
+                              }
+                            >
+                              Remove
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>
