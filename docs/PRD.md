@@ -2,7 +2,7 @@
 
 | Field            | Value                                                                                                                                                                                                |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Product**      | Jabodetabek Offer Stress-Test                                                                                                                                                                        |
+| **Product**      | Jabodetabek Relocation Price                                                                                                                                                                         |
 | **Repo**         | `relocation-maps-jakarta`                                                                                                                                                                            |
 | **Status**       | MVP shipped (client SPA); validation interviews 0/15                                                                                                                                                 |
 | **Owner**        | Founder                                                                                                                                                                                              |

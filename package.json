@@ -1,8 +1,11 @@
 {
   "name": "jabodetabek-relocation-price",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -10,7 +13,8 @@
     "test": "vitest run",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "verify": "bash .cursor/skills/stack-hardening/scripts/verify.sh"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",

@@ -3,7 +3,7 @@
 | Field            | Value                                                                                     |
 | ---------------- | ----------------------------------------------------------------------------------------- |
 | **Status**       | Accepted (MVP)                                                                            |
-| **Product**      | Jabodetabek Offer Stress-Test                                                             |
+| **Product**      | Jabodetabek Relocation Price                                                              |
 | **Last updated** | 2026-08-01                                                                                |
 | **Related**      | [PRD.md](./PRD.md), [TDD.md](./TDD.md), [public/data/README.md](../public/data/README.md) |
 
@@ -33,26 +33,26 @@ Build a **client-only** heuristic multimodal planner over static transit GeoJSON
 
 ## 2. Normative constants
 
-| Constant                           | Value                              |
-| ---------------------------------- | ---------------------------------- |
-| Default hybrid (WFO) days          | 3                                  |
-| Peak road factor                   | **1.45** default (editable via `/admin` → `master.traffic.peakFactor`) |
+| Constant                           | Value                                                                      |
+| ---------------------------------- | -------------------------------------------------------------------------- |
+| Default hybrid (WFO) days          | 3                                                                          |
+| Peak road factor                   | **1.45** default (editable via `/admin` → `master.traffic.peakFactor`)     |
 | P80 factor (road / mix summaries)  | **1.4** × P50 default (editable via `/admin` → `master.traffic.p80Factor`) |
-| Weeks / month                      | 4.33                               |
-| Interchange max walk               | 600 m                              |
-| Home board candidates (per system) | top 3 nearest                      |
-| Office alight candidates           | top 5 nearest                      |
-| Near-cheapest price band           | cheapest + Rp 5,000 → pick fastest |
-| Enumeration shortlist before OSRM  | 28 plans                           |
-| Walk speed                         | 80 m/min                           |
-| Transit ride speed (along network) | 350 m/min                          |
-| Ojek speed proxy                   | 22 km/h                            |
-| Walk / transit unlock radius       | ≤ 1.2 km to stop                   |
-| Ojek feeder to stop                | ≤ 8 km                             |
-| Move-home click threshold          | 400 m                              |
-| Max homes                          | unlimited                          |
-| Network vertex merge               | 120 m                              |
-| Snap endpoints to graph            | max 2.5 km                         |
+| Weeks / month                      | 4.33                                                                       |
+| Interchange max walk               | 600 m                                                                      |
+| Home board candidates (per system) | top 3 nearest                                                              |
+| Office alight candidates           | top 5 nearest                                                              |
+| Near-cheapest price band           | cheapest + Rp 5,000 → pick fastest                                         |
+| Enumeration shortlist before OSRM  | 28 plans                                                                   |
+| Walk speed                         | 80 m/min                                                                   |
+| Transit ride speed (along network) | 350 m/min                                                                  |
+| Ojek speed proxy                   | 22 km/h                                                                    |
+| Walk / transit unlock radius       | ≤ 1.2 km to stop                                                           |
+| Ojek feeder to stop                | ≤ 8 km                                                                     |
+| Move-home click threshold          | 400 m                                                                      |
+| Max homes                          | unlimited                                                                  |
+| Network vertex merge               | 120 m                                                                      |
+| Snap endpoints to graph            | max 2.5 km                                                                 |
 
 Peak road factor (**×1.45** default) applies to Gojek / motorcycle / car / TransJakarta. It does **not** apply to KRL / MRT / LRT / walk. Values are stored in master data (`traffic.peakFactor` / `traffic.p80Factor`) and editable on `/admin` (localStorage only).
 
@@ -197,18 +197,18 @@ Approx scale (MVP): KRL ~68 stops / 5 lines; MRT ~13 / 1; LRT ~18 / 2; TransJaka
 
 ## 7. Code map
 
-| Concern                    | Module                         |
-| -------------------------- | ------------------------------ |
-| Enumerate / rank / enrich  | `src/lib/multimodalPlanner.ts` |
-| Nearest stops, interchange | `src/lib/transitPlanner.ts`    |
-| Network Dijkstra + caches  | `src/lib/transitNetwork.ts`    |
-| OSRM + haversine           | `src/lib/routing.ts`           |
+| Concern                    | Module                                    |
+| -------------------------- | ----------------------------------------- |
+| Enumerate / rank / enrich  | `src/lib/multimodalPlanner.ts`            |
+| Nearest stops, interchange | `src/lib/transitPlanner.ts`               |
+| Network Dijkstra + caches  | `src/lib/transitNetwork.ts`               |
+| OSRM + haversine           | `src/lib/routing.ts`                      |
 | Peak / P80 factors         | `src/lib/traffic.ts` (+ `master.traffic`) |
-| Monthly math               | `src/lib/commute.ts`           |
-| Decision brief export      | `src/lib/report.ts`            |
-| Orchestration (UI)         | `src/pages/MapPage.tsx`        |
-| Pricing constants          | `src/master/defaults.ts`       |
-| Master data store          | `src/master/store.ts`          |
+| Monthly math               | `src/lib/commute.ts`                      |
+| Decision brief export      | `src/lib/report.ts`                       |
+| Orchestration (UI)         | `src/pages/MapPage.tsx`                   |
+| Pricing constants          | `src/master/defaults.ts`                  |
+| Master data store          | `src/master/store.ts`                     |
 
 ---
 

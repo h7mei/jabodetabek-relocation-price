@@ -15,4 +15,9 @@ export default defineConfig({
     // Prebundle main entry; worker is set explicitly via setWorkerUrl
     include: ["maplibre-gl"],
   },
+  build: {
+    // MapLibre + map chunk is expected; ScenarioMap is already lazy-loaded
+    chunkSizeWarningLimit: 1000,
+    target: "es2022",
+  },
 })

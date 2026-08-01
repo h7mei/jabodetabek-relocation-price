@@ -344,7 +344,7 @@ export function MapPage() {
           <div className="border-border space-y-2 border-b pb-3">
             <div className="flex items-start justify-between gap-2">
               <h1 className="font-heading text-base font-semibold tracking-tight leading-snug">
-                Jabodetabek Offer Stress-Test
+                Jabodetabek Relocation Price
               </h1>
               <Button variant="outline" size="sm" className="shrink-0" asChild>
                 <Link to="/admin">Admin</Link>

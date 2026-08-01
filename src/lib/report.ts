@@ -11,7 +11,7 @@ export function buildDecisionBrief(opts: {
 }): string {
   const peak = opts.peakFactor ?? 1.45
   const lines: string[] = []
-  lines.push("Jabodetabek Offer Stress-Test — Decision Brief")
+  lines.push("Jabodetabek Relocation Price — Decision Brief")
   lines.push("=".repeat(48))
   lines.push("")
   if (opts.candidateName) lines.push(`Candidate: ${opts.candidateName}`)
