@@ -36,8 +36,8 @@ Build a **client-only** heuristic multimodal planner over static transit GeoJSON
 | Constant                           | Value                              |
 | ---------------------------------- | ---------------------------------- |
 | Default hybrid (WFO) days          | 3                                  |
-| Peak road factor                   | 1.45                               |
-| P80 factor (road / mix summaries)  | 1.4 × P50                          |
+| Peak road factor                   | **1.45** default (editable via `/admin` → `master.traffic.peakFactor`) |
+| P80 factor (road / mix summaries)  | **1.4** × P50 default (editable via `/admin` → `master.traffic.p80Factor`) |
 | Weeks / month                      | 4.33                               |
 | Interchange max walk               | 600 m                              |
 | Home board candidates (per system) | top 3 nearest                      |
@@ -54,7 +54,7 @@ Build a **client-only** heuristic multimodal planner over static transit GeoJSON
 | Network vertex merge               | 120 m                              |
 | Snap endpoints to graph            | max 2.5 km                         |
 
-Peak road factor (**×1.45**) applies to Gojek / motorcycle / car / TransJakarta. It does **not** apply to KRL / MRT / LRT / walk.
+Peak road factor (**×1.45** default) applies to Gojek / motorcycle / car / TransJakarta. It does **not** apply to KRL / MRT / LRT / walk. Values are stored in master data (`traffic.peakFactor` / `traffic.p80Factor`) and editable on `/admin` (localStorage only).
 
 Monthly cost formula:
 
@@ -203,7 +203,7 @@ Approx scale (MVP): KRL ~68 stops / 5 lines; MRT ~13 / 1; LRT ~18 / 2; TransJaka
 | Nearest stops, interchange | `src/lib/transitPlanner.ts`    |
 | Network Dijkstra + caches  | `src/lib/transitNetwork.ts`    |
 | OSRM + haversine           | `src/lib/routing.ts`           |
-| Peak factor                | `src/lib/traffic.ts`           |
+| Peak / P80 factors         | `src/lib/traffic.ts` (+ `master.traffic`) |
 | Monthly math               | `src/lib/commute.ts`           |
 | Decision brief export      | `src/lib/report.ts`            |
 | Orchestration (UI)         | `src/pages/MapPage.tsx`        |

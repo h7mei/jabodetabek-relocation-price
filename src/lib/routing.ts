@@ -104,6 +104,9 @@ export async function getDrivingRoute(
   return p
 }
 
-export function peakRoadMinutes(durationSec: number): number {
-  return (durationSec / 60) * PEAK_FACTOR
+export function peakRoadMinutes(
+  durationSec: number,
+  peakFactor = PEAK_FACTOR
+): number {
+  return (durationSec / 60) * peakFactor
 }

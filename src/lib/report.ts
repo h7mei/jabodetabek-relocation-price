@@ -7,7 +7,9 @@ export function buildDecisionBrief(opts: {
   office: Pin
   wfoDays: number
   ranked: RankedHomeResult[]
+  peakFactor?: number
 }): string {
+  const peak = opts.peakFactor ?? 1.45
   const lines: string[] = []
   lines.push("Jabodetabek Offer Stress-Test — Decision Brief")
   lines.push("=".repeat(48))
@@ -48,18 +50,8 @@ export function buildDecisionBrief(opts: {
   lines.push(
     "not live Grab/Google ETAs, live GTFS schedules, or live ride-hailing quotes."
   )
-  lines.push("Peak road/TJ factor ×1.45; rail and walk are unfactored.")
+  lines.push(`Peak road/TJ factor ×${peak}; rail and walk are unfactored.`)
   lines.push("")
   lines.push(`Generated: ${new Date().toISOString()}`)
   return lines.join("\n")
-}
-
-export function downloadText(filename: string, text: string): void {
-  const blob = new Blob([text], { type: "text/plain;charset=utf-8" })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement("a")
-  a.href = url
-  a.download = filename
-  a.click()
-  URL.revokeObjectURL(url)
 }

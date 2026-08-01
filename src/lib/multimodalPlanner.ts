@@ -32,6 +32,7 @@ import {
   type Pin,
   type PlanLeg,
   type PricingMaster,
+  type TrafficMaster,
   type TransitStop,
   type TransitSystem,
 } from "@/types"
@@ -58,7 +59,8 @@ function accessLeg(
   from: LatLng,
   to: LatLng,
   label: string,
-  pricing: PricingMaster
+  pricing: PricingMaster,
+  traffic: TrafficMaster
 ): DraftLeg {
   const meters = haversineMeters(from, to)
   if (kind === "walk") {
@@ -78,7 +80,8 @@ function accessLeg(
   }
   const minutes = applyPeakMinutes(
     "gojek",
-    straightLineMinutes(meters, OJEK_KMH)
+    straightLineMinutes(meters, OJEK_KMH),
+    traffic.peakFactor
   )
   return {
     kind: "gojek",
@@ -121,11 +124,12 @@ function rideLeg(
   fromStop: TransitStop,
   toStop: TransitStop,
   network: GeoJSON.FeatureCollection,
-  pricing: PricingMaster
+  pricing: PricingMaster,
+  traffic: TrafficMaster
 ): DraftLeg {
   const path = pathBetweenStops(system, network, fromStop, toStop)
   let minutes = path.minutes
-  minutes = applyPeakMinutes(system, minutes)
+  minutes = applyPeakMinutes(system, minutes, traffic.peakFactor)
   const band = pricing[system]
   return {
     kind: system,
@@ -145,7 +149,11 @@ function scoreDraft(plan: DraftPlan): { minutes: number; cost: number } {
   return { minutes, cost }
 }
 
-function finalizePlan(plan: DraftPlan, wfoDays: number): CommutePlan {
+function finalizePlan(
+  plan: DraftPlan,
+  wfoDays: number,
+  traffic: TrafficMaster
+): CommutePlan {
   const { minutes, cost } = scoreDraft(plan)
   const monthly = monthlyFromOneWay(cost, minutes, wfoDays)
   const p50 = minutes
@@ -159,11 +167,14 @@ function finalizePlan(plan: DraftPlan, wfoDays: number): CommutePlan {
     monthlyCostIdr: monthly.monthlyCostIdr,
     monthlyHours: Math.round(monthly.monthlyHours * 10) / 10,
     p50Minutes: Math.round(p50),
-    p80Minutes: Math.round(p80FromP50(p50)),
+    p80Minutes: Math.round(p80FromP50(p50, traffic.p80Factor)),
   }
 }
 
-async function enrichGojekLegs(plan: DraftPlan): Promise<DraftPlan> {
+async function enrichGojekLegs(
+  plan: DraftPlan,
+  traffic: TrafficMaster
+): Promise<DraftPlan> {
   const legs = await Promise.all(
     plan.legs.map(async (leg) => {
       if (leg.kind !== "gojek" || !leg.needsOsrm) return leg
@@ -171,7 +182,7 @@ async function enrichGojekLegs(plan: DraftPlan): Promise<DraftPlan> {
       return {
         ...leg,
         meters: route.meters,
-        minutes: peakRoadMinutes(route.durationSec),
+        minutes: peakRoadMinutes(route.durationSec, traffic.peakFactor),
         coordinates: route.coordinates,
         needsOsrm: false,
       }
@@ -266,6 +277,7 @@ function enumerateSameSystem(
   stops: TransitStop[],
   loaded: LoadedTransitSystem,
   pricing: PricingMaster,
+  traffic: TrafficMaster,
   walkOnly: boolean
 ): DraftPlan[] {
   const boards = boardCandidates(home, stops, system)
@@ -286,17 +298,26 @@ function enumerateSameSystem(
             board,
             alight,
             loaded.networkGeoJSON,
-            pricing
+            pricing,
+            traffic
           )
           const legs = [
-            accessLeg(am, home, board, `${am} → ${board.name}`, pricing),
+            accessLeg(
+              am,
+              home,
+              board,
+              `${am} → ${board.name}`,
+              pricing,
+              traffic
+            ),
             ride,
             accessLeg(
               em,
               alight,
               office,
               `${alight.name} → office (${em})`,
-              pricing
+              pricing,
+              traffic
             ),
           ]
           const signature = legs.map((l) => `${l.kind}:${l.label}`).join("|")
@@ -318,6 +339,7 @@ function enumerateTransfers(
   stops: TransitStop[],
   bySys: Map<TransitSystem, LoadedTransitSystem>,
   pricing: PricingMaster,
+  traffic: TrafficMaster,
   walkOnly: boolean
 ): DraftPlan[] {
   const plans: DraftPlan[] = []
@@ -353,28 +375,45 @@ function enumerateTransfers(
             for (const am of accessModes) {
               for (const em of egressModes) {
                 const legs = [
-                  accessLeg(am, home, board, `${am} → ${board.name}`, pricing),
-                  rideLeg(sysA, board, pair.a, loadedA.networkGeoJSON, pricing),
+                  accessLeg(
+                    am,
+                    home,
+                    board,
+                    `${am} → ${board.name}`,
+                    pricing,
+                    traffic
+                  ),
+                  rideLeg(
+                    sysA,
+                    board,
+                    pair.a,
+                    loadedA.networkGeoJSON,
+                    pricing,
+                    traffic
+                  ),
                   accessLeg(
                     xferKind,
                     pair.a,
                     pair.b,
                     `transfer ${pair.a.name} → ${pair.b.name}`,
-                    pricing
+                    pricing,
+                    traffic
                   ),
                   rideLeg(
                     sysB,
                     pair.b,
                     alight,
                     loadedB.networkGeoJSON,
-                    pricing
+                    pricing,
+                    traffic
                   ),
                   accessLeg(
                     em,
                     alight,
                     office,
                     `${alight.name} → office (${em})`,
-                    pricing
+                    pricing,
+                    traffic
                   ),
                 ]
                 plans.push({
@@ -395,10 +434,18 @@ function enumerateTransfers(
 function pureGojek(
   home: LatLng,
   office: LatLng,
-  pricing: PricingMaster
+  pricing: PricingMaster,
+  traffic: TrafficMaster
 ): DraftPlan {
   const meters = haversineMeters(home, office)
-  const leg = accessLeg("gojek", home, office, "Door-to-door Gojek", pricing)
+  const leg = accessLeg(
+    "gojek",
+    home,
+    office,
+    "Door-to-door Gojek",
+    pricing,
+    traffic
+  )
   leg.meters = meters
   return {
     signature: `gojek:door`,
@@ -418,6 +465,7 @@ async function roadModePlan(
   office: LatLng,
   kind: "motorcycle" | "ojek" | "car",
   pricing: PricingMaster,
+  traffic: TrafficMaster,
   wfoDays: number
 ): Promise<CommutePlan> {
   const route = await getDrivingRoute(home, office)
@@ -428,7 +476,7 @@ async function roadModePlan(
       : kind === "car"
         ? pricing.car
         : pricing.gojek
-  const minutes = peakRoadMinutes(route.durationSec)
+  const minutes = peakRoadMinutes(route.durationSec, traffic.peakFactor)
   const cost = fareIdr(band, route.meters)
   const draft: DraftPlan = {
     signature: `${kind}:road`,
@@ -446,7 +494,7 @@ async function roadModePlan(
       },
     ],
   }
-  return finalizePlan(draft, wfoDays)
+  return finalizePlan(draft, wfoDays, traffic)
 }
 
 export async function planBestPriceMix(
@@ -454,6 +502,7 @@ export async function planBestPriceMix(
   office: LatLng,
   systems: LoadedTransitSystem[],
   pricing: PricingMaster,
+  traffic: TrafficMaster,
   wfoDays: number,
   walkOnly = false
 ): Promise<CommutePlan[]> {
@@ -472,6 +521,7 @@ export async function planBestPriceMix(
         stops,
         loaded,
         pricing,
+        traffic,
         walkOnly
       )
     )
@@ -479,13 +529,23 @@ export async function planBestPriceMix(
 
   if (!walkOnly) {
     drafts.push(
-      ...enumerateTransfers(home, office, stops, bySys, pricing, walkOnly)
+      ...enumerateTransfers(
+        home,
+        office,
+        stops,
+        bySys,
+        pricing,
+        traffic,
+        walkOnly
+      )
     )
-    drafts.push(pureGojek(home, office, pricing))
+    drafts.push(pureGojek(home, office, pricing, traffic))
   }
 
   drafts = shortlist(drafts)
-  const enriched = await Promise.all(drafts.map(enrichGojekLegs))
+  const enriched = await Promise.all(
+    drafts.map((d) => enrichGojekLegs(d, traffic))
+  )
   // Fix gojek fares after OSRM meters
   const withFares = enriched.map((p) => ({
     ...p,
@@ -495,7 +555,7 @@ export async function planBestPriceMix(
         : leg
     ),
   }))
-  const finalized = withFares.map((p) => finalizePlan(p, wfoDays))
+  const finalized = withFares.map((p) => finalizePlan(p, wfoDays, traffic))
   return rankRecommendations(finalized)
 }
 
@@ -505,15 +565,34 @@ export async function planForMode(
   mode: CommuteMode,
   systems: LoadedTransitSystem[],
   pricing: PricingMaster,
+  traffic: TrafficMaster,
   wfoDays: number
 ): Promise<CommutePlan[]> {
   if (mode === "motorcycle" || mode === "ojek" || mode === "car") {
-    return [await roadModePlan(home, office, mode, pricing, wfoDays)]
+    return [
+      await roadModePlan(home, office, mode, pricing, traffic, wfoDays),
+    ]
   }
   if (mode === "transit") {
     const stops = allStops(systems)
     if (!transitOnlyUnlocked(home, office, stops)) return []
-    return planBestPriceMix(home, office, systems, pricing, wfoDays, true)
+    return planBestPriceMix(
+      home,
+      office,
+      systems,
+      pricing,
+      traffic,
+      wfoDays,
+      true
+    )
   }
-  return planBestPriceMix(home, office, systems, pricing, wfoDays, false)
+  return planBestPriceMix(
+    home,
+    office,
+    systems,
+    pricing,
+    traffic,
+    wfoDays,
+    false
+  )
 }

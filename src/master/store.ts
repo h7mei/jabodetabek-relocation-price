@@ -45,6 +45,10 @@ export function loadMaster(): MasterData {
       ...structuredClone(DEFAULT_MASTER),
       ...parsed,
       pricing: { ...DEFAULT_MASTER.pricing, ...parsed.pricing },
+      traffic: {
+        ...DEFAULT_MASTER.traffic,
+        ...(parsed as MasterData).traffic,
+      },
       offices: resolvePresets(
         parsed.offices,
         LEGACY_OFFICE_IDS,
@@ -77,6 +81,10 @@ export function importMasterJson(text: string): MasterData {
   const merged: MasterData = {
     version: 1,
     pricing: { ...DEFAULT_MASTER.pricing, ...parsed.pricing },
+    traffic: {
+      ...DEFAULT_MASTER.traffic,
+      ...(parsed as MasterData).traffic,
+    },
     offices: parsed.offices,
     homes: parsed.homes,
   }

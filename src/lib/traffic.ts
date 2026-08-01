@@ -1,7 +1,7 @@
 import { PEAK_FACTOR, P80_FACTOR } from "@/master/defaults"
 import type { LegKind } from "@/types"
 
-/** Peak ×1.45 on road / TJ / Gojek; not on rail or walk */
+/** Peak on road / TJ / Gojek; not on rail or walk */
 export function appliesPeak(kind: LegKind): boolean {
   return (
     kind === "gojek" ||
@@ -11,10 +11,14 @@ export function appliesPeak(kind: LegKind): boolean {
   )
 }
 
-export function applyPeakMinutes(kind: LegKind, minutes: number): number {
-  return appliesPeak(kind) ? minutes * PEAK_FACTOR : minutes
+export function applyPeakMinutes(
+  kind: LegKind,
+  minutes: number,
+  peakFactor = PEAK_FACTOR
+): number {
+  return appliesPeak(kind) ? minutes * peakFactor : minutes
 }
 
-export function p80FromP50(p50: number): number {
-  return p50 * P80_FACTOR
+export function p80FromP50(p50: number, p80Factor = P80_FACTOR): number {
+  return p50 * p80Factor
 }

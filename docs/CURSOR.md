@@ -11,7 +11,7 @@ Lean notes for humans and agents working this repo. Scope truth: [PRODUCT.md](./
 - MVP non-goals: AI chat, housing scrape, accounts/teams, employer dashboards, multi-city beyond Jabodetabek
 - Prefer editing `src/lib/*` planners, `src/pages/MapPage.tsx`, `src/master/*` over new frameworks
 - Transit SoT: `public/data/transit/` GeoJSON (`[lng, lat]`) — see `public/data/README.md`
-- Decision brief: plain `.txt` via `src/lib/report.ts`, not HTML
+- Decision brief: plain `.txt` via `src/lib/report.ts` (copy to clipboard), not HTML
 
 ---
 
@@ -45,4 +45,4 @@ Math/radius/ranking changes → RFC-001 + failing/passing goldens in the same ch
 
 ## Admin
 
-`/admin` edits master presets/pricing/transit in **localStorage** only — no auth. Do not treat it as a multi-tenant console.
+`/admin` edits master presets/pricing/traffic factors in **localStorage** only — no auth. Do not treat it as a multi-tenant console.

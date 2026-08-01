@@ -13,7 +13,7 @@ import {
   resetMaster,
   saveMaster,
 } from "@/master/store"
-import type { MasterData, PricingMaster } from "@/types"
+import type { MasterData, PricingMaster, TrafficMaster } from "@/types"
 
 const THEME_OPTIONS = [
   { value: "light", label: "Light" },
@@ -38,6 +38,16 @@ export function AdminPage() {
         ...prev.pricing,
         [key]: { ...prev.pricing[key], [field]: value },
       },
+    }))
+  }
+
+  const updateTraffic = <K extends keyof TrafficMaster>(
+    key: K,
+    value: number,
+  ) => {
+    setMaster((prev) => ({
+      ...prev,
+      traffic: { ...prev.traffic, [key]: value },
     }))
   }
 
@@ -113,7 +123,53 @@ export function AdminPage() {
       </section>
 
       <section className="space-y-3">
+        <h2 className="font-medium">Traffic heuristics</h2>
+        <p className="text-muted-foreground text-xs">
+          Peak applies to Gojek / motorcycle / car / TransJakarta only — not
+          KRL / MRT / LRT / walk. Reload the map page after save.
+        </p>
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div>
+            <Label className="text-xs">Peak factor (road / TJ)</Label>
+            <Input
+              type="number"
+              step="0.01"
+              min={1}
+              value={master.traffic.peakFactor}
+              onChange={(e) =>
+                updateTraffic(
+                  "peakFactor",
+                  Math.max(1, Number(e.target.value) || 1),
+                )
+              }
+            />
+          </div>
+          <div>
+            <Label className="text-xs">P80 factor (× P50)</Label>
+            <Input
+              type="number"
+              step="0.01"
+              min={1}
+              value={master.traffic.p80Factor}
+              onChange={(e) =>
+                updateTraffic(
+                  "p80Factor",
+                  Math.max(1, Number(e.target.value) || 1),
+                )
+              }
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-3">
         <h2 className="font-medium">Pricing (IDR heuristics)</h2>
+        <p className="text-muted-foreground text-xs">
+          Formula: base + billedKm × perKm. base = fixed boarding / flag-fall;
+          perKm = IDR per billed km; kmCap = max km billed (blank or 0 = no
+          cap). Flat fares (e.g. TransJakarta): set perKm to 0. Heuristics only
+          — not live Grab / JakLingko quotes.
+        </p>
         {(
           Object.keys(master.pricing) as (keyof PricingMaster)[]
         ).map((key) => (

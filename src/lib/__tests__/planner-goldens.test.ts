@@ -28,17 +28,21 @@ describe("G1 monthly cost", () => {
 describe("G2 peak factor", () => {
   it("applies to gojek/motorcycle/car/TJ only", () => {
     expect(appliesPeak("gojek")).toBe(true)
+    expect(appliesPeak("motorcycle")).toBe(true)
+    expect(appliesPeak("car")).toBe(true)
     expect(appliesPeak("transjakarta")).toBe(true)
     expect(appliesPeak("krl")).toBe(false)
     expect(appliesPeak("walk")).toBe(false)
     expect(applyPeakMinutes("gojek", 100)).toBeCloseTo(145)
+    expect(applyPeakMinutes("gojek", 100, 1.6)).toBeCloseTo(160)
     expect(applyPeakMinutes("walk", 100)).toBe(100)
   })
 })
 
 describe("G3 P80", () => {
-  it("≈ P50 × 1.4", () => {
+  it("≈ P50 × 1.4 (or custom factor)", () => {
     expect(p80FromP50(50)).toBeCloseTo(70)
+    expect(p80FromP50(50, 1.5)).toBeCloseTo(75)
   })
 })
 

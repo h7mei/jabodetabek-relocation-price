@@ -1,4 +1,9 @@
-import type { MasterData, PricingMaster, PresetPlace } from "@/types"
+import type {
+  MasterData,
+  PricingMaster,
+  PresetPlace,
+  TrafficMaster,
+} from "@/types"
 
 /** Heuristic fares — JakLingko / Gojek-like bands, not live quotes */
 export const DEFAULT_PRICING: PricingMaster = {
@@ -61,9 +66,18 @@ export const DEFAULT_HOMES: PresetPlace[] = [
   { id: "cibubur", label: "Cibubur", lat: -6.37, lng: 106.895 },
 ]
 
+export const PEAK_FACTOR = 1.45
+export const P80_FACTOR = 1.4
+
+export const DEFAULT_TRAFFIC: TrafficMaster = {
+  peakFactor: PEAK_FACTOR,
+  p80Factor: P80_FACTOR,
+}
+
 export const DEFAULT_MASTER: MasterData = {
   version: 1,
   pricing: DEFAULT_PRICING,
+  traffic: DEFAULT_TRAFFIC,
   offices: DEFAULT_OFFICES,
   homes: DEFAULT_HOMES,
 }
@@ -79,8 +93,6 @@ export const MOVE_HOME_M = 400
 export const INTERCHANGE_M = 600
 export const VERTEX_MERGE_M = 120
 export const SNAP_MAX_M = 2_500
-export const PEAK_FACTOR = 1.45
-export const P80_FACTOR = 1.4
 export const WEEKS_PER_MONTH = 4.33
 export const WALK_M_PER_MIN = 80
 export const TRANSIT_M_PER_MIN = 350

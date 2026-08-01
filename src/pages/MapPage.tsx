@@ -24,7 +24,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { formatIdr } from "@/lib/commute"
 import { planForMode } from "@/lib/multimodalPlanner"
-import { buildDecisionBrief, downloadText } from "@/lib/report"
+import { buildDecisionBrief } from "@/lib/report"
 import { haversineMeters } from "@/lib/routing"
 import { loadTransitCatalog } from "@/lib/transitCatalog"
 import { DEFAULT_WFO_DAYS, MOVE_HOME_M } from "@/master/defaults"
@@ -70,8 +70,10 @@ export function MapPage() {
   const [selectedPlan, setSelectedPlan] = useState<CommutePlan | null>(null)
   const [computing, setComputing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [briefCopied, setBriefCopied] = useState(false)
   const formId = useId()
   const compareGen = useRef(0)
+  const briefCopyTimer = useRef<number | null>(null)
   const selectedHomeIdRef = useRef<string | null>(null)
   selectedHomeIdRef.current = selectedHomeId
   const pendingSelectHomeIdRef = useRef<string | null>(null)
@@ -136,6 +138,7 @@ export function MapPage() {
               mode,
               transit,
               master.pricing,
+              master.traffic,
               wfoDays,
             )
             if (gen !== compareGen.current) return
@@ -196,7 +199,7 @@ export function MapPage() {
       window.clearTimeout(timer)
       compareGen.current += 1
     }
-  }, [office, homes, wfoDays, transit, master.pricing])
+  }, [office, homes, wfoDays, transit, master.pricing, master.traffic])
 
   const handleMapClick = (lng: number, lat: number) => {
     if (step === "office" || !office) {
@@ -299,7 +302,7 @@ export function MapPage() {
     setError(null)
   }
 
-  const exportBrief = () => {
+  const copyBrief = async () => {
     if (!office || !ranked.length) return
     const text = buildDecisionBrief({
       candidateName: name || undefined,
@@ -307,8 +310,21 @@ export function MapPage() {
       office,
       wfoDays,
       ranked,
+      peakFactor: master.traffic.peakFactor,
     })
-    downloadText("decision-brief.txt", text)
+    try {
+      await navigator.clipboard.writeText(text)
+      setBriefCopied(true)
+      if (briefCopyTimer.current != null) {
+        window.clearTimeout(briefCopyTimer.current)
+      }
+      briefCopyTimer.current = window.setTimeout(() => {
+        setBriefCopied(false)
+        briefCopyTimer.current = null
+      }, 2000)
+    } catch {
+      setError("Could not copy brief to clipboard")
+    }
   }
 
   // Newest placement first; cost rank kept for # badges / brief
@@ -520,9 +536,9 @@ export function MapPage() {
                   variant="outline"
                   type="button"
                   disabled={!ranked.length}
-                  onClick={exportBrief}
+                  onClick={() => void copyBrief()}
                 >
-                  Export .txt brief
+                  {briefCopied ? "Copied!" : "Copy brief as txt"}
                 </Button>
               </div>
             </div>

@@ -67,6 +67,14 @@ export type PricingMaster = {
   transjakarta: FareBand
 }
 
+/** Peak / P80 heuristics — editable via /admin */
+export type TrafficMaster = {
+  /** Road / Gojek / TransJakarta peak multiplier (default 1.45) */
+  peakFactor: number
+  /** P80 ≈ P50 × this (default 1.4) */
+  p80Factor: number
+}
+
 export type LegKind =
   | "walk"
   | "gojek"
@@ -133,6 +141,7 @@ export type TransitCatalogEntry = {
 export type MasterData = {
   version: 1
   pricing: PricingMaster
+  traffic: TrafficMaster
   offices: PresetPlace[]
   homes: PresetPlace[]
 }
