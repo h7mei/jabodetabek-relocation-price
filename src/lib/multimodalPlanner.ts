@@ -216,7 +216,8 @@ function shortlist(plans: DraftPlan[]): DraftPlan[] {
   return [...picked.values()].slice(0, SHORTLIST_CAP)
 }
 
-function rankRecommendations(plans: CommutePlan[]): CommutePlan[] {
+/** Exported for goldens G8/G9 — Best price / time / balance ranking */
+export function rankRecommendations(plans: CommutePlan[]): CommutePlan[] {
   if (!plans.length) return []
   const byCost = [...plans].sort(
     (a, b) =>

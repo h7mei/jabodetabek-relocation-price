@@ -91,7 +91,7 @@ Use this when recreating the app. Prefer behavior-faithful planner + honest cave
 
 - [x] All items in [PRD §14](./PRD.md#14-acceptance-criteria-mvp)
 - [x] `npm run lint` and `npm run build` green
-- [x] When harness exists: planner unit tests green ([TDD.md](./TDD.md))
+- [x] Planner goldens G1–G9 green ([TDD.md](./TDD.md)); CI: lint → test → build
 
 ---
 
