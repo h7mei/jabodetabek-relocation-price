@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react"
+import { Loader2 } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import {
@@ -515,7 +516,20 @@ export function MapPage() {
               />
             </Suspense>
 
-            <div className="absolute top-2 right-2 flex flex-col gap-1.5">
+            {computing && (
+              <div
+                className="bg-background/60 absolute inset-0 z-20 flex items-center justify-center backdrop-blur-[1px]"
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <div className="bg-background/95 flex items-center gap-2 rounded-md border px-3 py-2 text-sm shadow-sm">
+                  <Loader2 className="size-4 shrink-0 animate-spin" />
+                  Computing commute…
+                </div>
+              </div>
+            )}
+
+            <div className="absolute top-2 right-2 z-30 flex flex-col gap-1.5">
               <div className="bg-background/90 rounded-md border px-2 py-1 text-xs shadow-sm">
                 {step === "office"
                   ? "Step: place office"
