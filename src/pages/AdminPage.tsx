@@ -84,16 +84,16 @@ export function AdminPage() {
   }
 
   return (
-    <div className="bg-background text-foreground mx-auto max-w-3xl space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
+    <div className="bg-background text-foreground mx-auto max-w-3xl space-y-6 p-4 sm:p-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <h1 className="font-heading text-xl font-semibold">Master data</h1>
           <p className="text-muted-foreground text-sm">
             Local-only editor. No auth. Transit GeoJSON remains under{" "}
             <code className="text-xs">public/data/transit/</code>.
           </p>
         </div>
-        <Button variant="outline" asChild>
+        <Button variant="outline" asChild className="w-fit shrink-0">
           <Link to="/">← Map</Link>
         </Button>
       </div>
@@ -173,8 +173,8 @@ export function AdminPage() {
         {(
           Object.keys(master.pricing) as (keyof PricingMaster)[]
         ).map((key) => (
-          <div key={key} className="grid grid-cols-4 items-end gap-2 text-sm">
-            <Label className="col-span-1 capitalize">{key}</Label>
+          <div key={key} className="grid grid-cols-2 items-end gap-2 text-sm sm:grid-cols-4">
+            <Label className="col-span-2 capitalize sm:col-span-1">{key}</Label>
             <div>
               <Label className="text-xs">base</Label>
               <Input

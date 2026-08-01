@@ -6,8 +6,9 @@ import {
   useId,
   useRef,
   useState,
+  type ReactNode,
 } from "react"
-import { Loader2 } from "lucide-react"
+import { ChevronDown, Loader2, Menu, X } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import {
@@ -17,6 +18,13 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -79,6 +87,8 @@ export function MapPage() {
   const [onboardingOpen, setOnboardingOpen] = useState(
     () => !hasSeenOnboarding(),
   )
+  const [controlsOpen, setControlsOpen] = useState(false)
+  const [ptLayersOpen, setPtLayersOpen] = useState(false)
   const formId = useId()
   const compareGen = useRef(0)
   const briefCopyTimer = useRef<number | null>(null)
@@ -345,13 +355,379 @@ export function MapPage() {
       (homeOrder.get(b.home.id) ?? 0) - (homeOrder.get(a.home.id) ?? 0),
   )
 
+  const stepHint =
+    step === "office"
+      ? "Click map to place office"
+      : step === "homes"
+        ? "Click to place homes. Click near a home to move it."
+        : `${homes.length} home(s). Routes update automatically.`
+
+  const controlsBody = (
+    <>
+      <div>
+        <div className="mb-1 flex items-center justify-between gap-2">
+          <p className="font-medium">Placement</p>
+          <Button
+            size="sm"
+            variant="outline"
+            type="button"
+            disabled={!office && homes.length === 0 && ranked.length === 0}
+            onClick={resetScenario}
+          >
+            Reset
+          </Button>
+        </div>
+        <p className="text-muted-foreground text-xs">{stepHint}</p>
+        <div className="mt-2 flex flex-wrap gap-1">
+          <Badge variant={step === "office" ? "default" : "secondary"}>
+            Office
+          </Badge>
+          <Badge variant={step !== "office" ? "default" : "secondary"}>
+            Homes {homes.length}
+          </Badge>
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        <Label>Office presets</Label>
+        <div className="flex flex-wrap gap-1">
+          {master.offices.map((o) => (
+            <Button
+              key={o.id}
+              size="sm"
+              variant="outline"
+              type="button"
+              onClick={() => {
+                placeOfficePreset(o.id)
+                setControlsOpen(false)
+              }}
+            >
+              {o.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-1">
+        <Label>Home presets</Label>
+        <div className="flex flex-wrap gap-1">
+          {master.homes.map((h) => (
+            <Button
+              key={h.id}
+              size="sm"
+              variant="outline"
+              type="button"
+              onClick={() => {
+                addHomePreset(h.id)
+                setControlsOpen(false)
+              }}
+            >
+              {h.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {office && (
+        <div className="space-y-1">
+          <Label htmlFor={`${formId}-olat`}>Office lat / lng</Label>
+          <div className="flex gap-1">
+            <Input
+              id={`${formId}-olat`}
+              type="number"
+              step="any"
+              value={office.lat}
+              onChange={(e) =>
+                setOffice({ ...office, lat: Number(e.target.value) })
+              }
+            />
+            <Input
+              type="number"
+              step="any"
+              value={office.lng}
+              onChange={(e) =>
+                setOffice({ ...office, lng: Number(e.target.value) })
+              }
+            />
+          </div>
+        </div>
+      )}
+
+      <Separator />
+
+      <div className="space-y-1">
+        <Label>WFO days</Label>
+        <Input
+          type="number"
+          min={1}
+          max={5}
+          value={wfoDays}
+          onChange={(e) => setWfoDays(Number(e.target.value) || 1)}
+        />
+      </div>
+
+      <div className="space-y-1">
+        <Label>Brief name / company</Label>
+        <Input
+          placeholder="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          placeholder="Company"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
+      </div>
+
+      <p className="text-muted-foreground text-xs">
+        {computing
+          ? "Computing commute…"
+          : office && homes.length
+            ? "Routes update when you place or move pins."
+            : "Place office, then a home — commute computes automatically."}
+      </p>
+      {error && <p className="text-destructive text-xs">{error}</p>}
+    </>
+  )
+
+  const renderPlanLegs = (
+    homeId: string,
+    homeLabel: string,
+    plans: RankedHomeResult["plans"],
+  ) => (
+    <div className="space-y-2">
+      <Label>Recommendations for {homeLabel}</Label>
+      <div className="flex flex-wrap gap-1">
+        {plans.map((p) => (
+          <Button
+            key={p.signature + p.label}
+            size="sm"
+            variant={
+              selectedPlan?.signature === p.signature &&
+              selectedPlan?.label === p.label
+                ? "default"
+                : "outline"
+            }
+            type="button"
+            onClick={() => setSelectedPlan(p)}
+          >
+            {p.label} · {p.oneWayMinutes}m · {formatIdr(p.oneWayCostIdr)}
+          </Button>
+        ))}
+      </div>
+      {selectedPlan && selectedHomeId === homeId && (
+        <ol className="text-muted-foreground list-decimal space-y-1 pl-4 text-xs">
+          {selectedPlan.legs.map((leg, li) => (
+            <li key={li}>
+              <span
+                className="mr-1 inline-block size-2 rounded-full"
+                style={{
+                  background: TRANSIT_COLORS[leg.kind as TransitSystem]
+                    ? TRANSIT_COLORS[leg.kind as TransitSystem]
+                    : leg.kind === "gojek"
+                      ? "#22c55e"
+                      : "#64748b",
+                }}
+              />
+              {leg.label} — {Math.round(leg.minutes)} min,{" "}
+              {formatIdr(leg.costIdr)}
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  )
+
+  const renderResultRows = (): ReactNode =>
+    displayRanked.map((r) => {
+      const home = homes.find((h) => h.id === r.home.id) ?? r.home
+      const homeMode = home.mode ?? "cheapest"
+      const costRank = costRankByHomeId.get(r.home.id) ?? 0
+      const isExpanded = selectedHomeId === r.home.id
+      const rowPlan = isExpanded && selectedPlan ? selectedPlan : r.primary
+      const selectRow = () => {
+        if (selectedHomeId === r.home.id) return
+        setSelectedHomeId(r.home.id)
+        setSelectedPlan(r.primary)
+      }
+      return (
+        <Fragment key={r.home.id}>
+          <tr
+            ref={(el) => {
+              if (el) rowRefs.current.set(r.home.id, el)
+              else rowRefs.current.delete(r.home.id)
+            }}
+            tabIndex={0}
+            aria-expanded={isExpanded}
+            className={`hover:bg-muted/50 cursor-pointer border-b outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset ${
+              isExpanded ? "bg-muted" : ""
+            }`}
+            onClick={selectRow}
+            onFocus={selectRow}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault()
+                selectRow()
+              }
+            }}
+          >
+            <td className="p-1 align-top">
+              <div
+                className="space-y-1"
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+              >
+                <div className="text-muted-foreground text-[10px]">
+                  #{costRank}
+                </div>
+                <Input
+                  className="h-7 min-w-24 text-xs font-medium sm:min-w-28"
+                  value={home.label}
+                  aria-label={`${home.label} label`}
+                  onChange={(e) =>
+                    setHomes((prev) =>
+                      prev.map((x) =>
+                        x.id === home.id ? { ...x, label: e.target.value } : x,
+                      ),
+                    )
+                  }
+                />
+                <div className="hidden gap-1 sm:flex">
+                  <Input
+                    className="h-7 text-xs"
+                    type="number"
+                    step="any"
+                    value={home.lat}
+                    aria-label={`${home.label} latitude`}
+                    onChange={(e) =>
+                      setHomes((prev) =>
+                        prev.map((x) =>
+                          x.id === home.id
+                            ? { ...x, lat: Number(e.target.value) }
+                            : x,
+                        ),
+                      )
+                    }
+                  />
+                  <Input
+                    className="h-7 text-xs"
+                    type="number"
+                    step="any"
+                    value={home.lng}
+                    aria-label={`${home.label} longitude`}
+                    onChange={(e) =>
+                      setHomes((prev) =>
+                        prev.map((x) =>
+                          x.id === home.id
+                            ? { ...x, lng: Number(e.target.value) }
+                            : x,
+                        ),
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            </td>
+            <td
+              className="p-1 align-middle"
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
+              <Select
+                value={homeMode}
+                onValueChange={(v) => setHomeMode(home.id, v as CommuteMode)}
+              >
+                <SelectTrigger
+                  className="h-7 min-w-24 text-xs sm:min-w-32"
+                  aria-label={`${home.label} commute mode`}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {COMMUTE_MODES.map((m) => (
+                    <SelectItem key={m} value={m}>
+                      {COMMUTE_MODE_LABELS[m]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </td>
+            <td className="p-1 align-middle whitespace-nowrap">
+              {rowPlan.p50Minutes} / {rowPlan.p80Minutes} min
+            </td>
+            <td className="hidden p-1 align-middle sm:table-cell">
+              {rowPlan.monthlyHours}
+            </td>
+            <td className="p-1 align-middle whitespace-nowrap">
+              {formatIdr(rowPlan.monthlyCostIdr)}
+            </td>
+            <td
+              className="p-1 align-middle"
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
+              <Button
+                size="sm"
+                variant="ghost"
+                type="button"
+                onClick={() =>
+                  setHomes((prev) => prev.filter((x) => x.id !== home.id))
+                }
+              >
+                Remove
+              </Button>
+            </td>
+          </tr>
+          {isExpanded && r.plans.length > 0 && (
+            <tr className="bg-muted/40 border-b">
+              <td colSpan={6} className="p-3">
+                {renderPlanLegs(r.home.id, home.label, r.plans)}
+              </td>
+            </tr>
+          )}
+        </Fragment>
+      )
+    })
+
   return (
-    <div className="bg-background text-foreground flex h-svh flex-col">
+    <div className="bg-background text-foreground flex h-svh flex-col overflow-hidden">
+      <header className="border-border flex shrink-0 items-center gap-2 border-b px-2 py-1.5 pt-[max(0.375rem,env(safe-area-inset-top))] md:hidden">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="shrink-0"
+          onClick={() => setControlsOpen(true)}
+          aria-label="Open controls"
+        >
+          <Menu className="size-4" />
+          Controls
+        </Button>
+        <div className="min-w-0 flex-1">
+          <h1 className="font-heading truncate text-sm font-semibold tracking-tight">
+            Relocation Price
+          </h1>
+          <p className="text-muted-foreground truncate text-[10px]">
+            {stepHint}
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          type="button"
+          className="shrink-0"
+          onClick={() => setOnboardingOpen(true)}
+        >
+          How to
+        </Button>
+      </header>
+
       <div className="flex min-h-0 flex-1">
-        <aside className="border-border flex w-80 shrink-0 flex-col gap-3 overflow-y-auto border-r p-3 text-sm">
+        <aside className="border-border hidden w-80 shrink-0 flex-col gap-3 overflow-y-auto border-r p-3 text-sm md:flex">
           <div className="border-border space-y-2 border-b pb-3">
             <div className="flex items-start justify-between gap-2">
-              <h1 className="font-heading text-base font-semibold tracking-tight leading-snug">
+              <h1 className="font-heading text-base leading-snug font-semibold tracking-tight">
                 Jabodetabek Relocation Price
               </h1>
               <div className="flex shrink-0 gap-1">
@@ -372,131 +748,7 @@ export function MapPage() {
               Pin office + homes · compare commute bands · export a brief
             </p>
           </div>
-
-          <div>
-            <div className="mb-1 flex items-center justify-between gap-2">
-              <p className="font-medium">Placement</p>
-              <Button
-                size="sm"
-                variant="outline"
-                type="button"
-                disabled={!office && homes.length === 0 && ranked.length === 0}
-                onClick={resetScenario}
-              >
-                Reset
-              </Button>
-            </div>
-            <p className="text-muted-foreground text-xs">
-              {step === "office" && "Click map to place office"}
-              {step === "homes" &&
-                "Click to place homes. Click near a home to move it."}
-              {step === "done" &&
-                `${homes.length} home(s). Routes update automatically.`}
-            </p>
-            <div className="mt-2 flex flex-wrap gap-1">
-              <Badge variant={step === "office" ? "default" : "secondary"}>
-                Office
-              </Badge>
-              <Badge variant={step !== "office" ? "default" : "secondary"}>
-                Homes {homes.length}
-              </Badge>
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            <Label>Office presets</Label>
-            <div className="flex flex-wrap gap-1">
-              {master.offices.map((o) => (
-                <Button
-                  key={o.id}
-                  size="sm"
-                  variant="outline"
-                  type="button"
-                  onClick={() => placeOfficePreset(o.id)}
-                >
-                  {o.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            <Label>Home presets</Label>
-            <div className="flex flex-wrap gap-1">
-              {master.homes.map((h) => (
-                <Button
-                  key={h.id}
-                  size="sm"
-                  variant="outline"
-                  type="button"
-                  onClick={() => addHomePreset(h.id)}
-                >
-                  {h.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {office && (
-            <div className="space-y-1">
-              <Label htmlFor={`${formId}-olat`}>Office lat / lng</Label>
-              <div className="flex gap-1">
-                <Input
-                  id={`${formId}-olat`}
-                  type="number"
-                  step="any"
-                  value={office.lat}
-                  onChange={(e) =>
-                    setOffice({ ...office, lat: Number(e.target.value) })
-                  }
-                />
-                <Input
-                  type="number"
-                  step="any"
-                  value={office.lng}
-                  onChange={(e) =>
-                    setOffice({ ...office, lng: Number(e.target.value) })
-                  }
-                />
-              </div>
-            </div>
-          )}
-
-          <Separator />
-
-          <div className="space-y-1">
-            <Label>WFO days</Label>
-            <Input
-              type="number"
-              min={1}
-              max={5}
-              value={wfoDays}
-              onChange={(e) => setWfoDays(Number(e.target.value) || 1)}
-            />
-          </div>
-
-          <div className="space-y-1">
-            <Label>Brief name / company</Label>
-            <Input
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <Input
-              placeholder="Company"
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-            />
-          </div>
-
-          <p className="text-muted-foreground text-xs">
-            {computing
-              ? "Computing commute…"
-              : office && homes.length
-                ? "Routes update when you place or move pins."
-                : "Place office, then a home — commute computes automatically."}
-          </p>
-          {error && <p className="text-destructive text-xs">{error}</p>}
+          {controlsBody}
         </aside>
 
         <main className="flex min-w-0 flex-1 flex-col">
@@ -529,27 +781,47 @@ export function MapPage() {
               </div>
             )}
 
-            <div className="absolute top-2 right-2 z-30 flex flex-col gap-1.5">
-              <div className="bg-background/90 rounded-md border px-2 py-1 text-xs shadow-sm">
+            <div className="absolute top-2 right-2 z-30 flex max-w-[min(100%-1rem,14rem)] flex-col gap-1.5">
+              <div className="bg-background/90 hidden rounded-md border px-2 py-1 text-xs shadow-sm md:block">
                 {step === "office"
                   ? "Step: place office"
                   : `Step: place homes (${homes.length})`}
               </div>
-              <div className="bg-background/90 space-y-1.5 rounded-md border px-2 py-1.5 text-xs shadow-sm">
-                <p className="text-muted-foreground font-medium">PT layers</p>
-                {TRANSIT_SYSTEMS.map((id) => (
-                  <label key={id} className="flex items-center gap-2">
-                    <Checkbox
-                      checked={ptEnabled[id]}
-                      onCheckedChange={(c) =>
-                        setPtEnabled((prev) => ({ ...prev, [id]: !!c }))
-                      }
-                    />
-                    <span style={{ color: TRANSIT_COLORS[id] }}>
-                      {transit.find((t) => t.id === id)?.label ?? id}
-                    </span>
-                  </label>
-                ))}
+              <div className="bg-background/90 rounded-md border text-xs shadow-sm">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-2 px-2 py-1.5 text-left md:pointer-events-none"
+                  onClick={() => setPtLayersOpen((o) => !o)}
+                  aria-expanded={ptLayersOpen}
+                >
+                  <span className="text-muted-foreground font-medium">
+                    PT layers
+                  </span>
+                  <ChevronDown
+                    className={`size-3.5 shrink-0 transition-transform md:hidden ${
+                      ptLayersOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                <div
+                  className={`space-y-1.5 px-2 pb-1.5 ${
+                    ptLayersOpen ? "block" : "hidden"
+                  } md:block`}
+                >
+                  {TRANSIT_SYSTEMS.map((id) => (
+                    <label key={id} className="flex items-center gap-2">
+                      <Checkbox
+                        checked={ptEnabled[id]}
+                        onCheckedChange={(c) =>
+                          setPtEnabled((prev) => ({ ...prev, [id]: !!c }))
+                        }
+                      />
+                      <span style={{ color: TRANSIT_COLORS[id] }}>
+                        {transit.find((t) => t.id === id)?.label ?? id}
+                      </span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -557,7 +829,7 @@ export function MapPage() {
           <section
             ref={resultsRef}
             tabIndex={-1}
-            className="border-border max-h-[40%] overflow-y-auto border-t p-3 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="border-border max-h-[38svh] overflow-y-auto border-t p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] outline-none focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 sm:max-h-[40%]"
           >
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
               <h2 className="font-medium">Results</h2>
@@ -580,243 +852,62 @@ export function MapPage() {
 
             {!ranked.length && (
               <p className="text-muted-foreground text-sm">
-                Place an office and at least one home — results appear automatically.
+                Place an office and at least one home — results appear
+                automatically.
               </p>
             )}
 
             {ranked.length > 0 && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+              <div className="overflow-x-auto -mx-1 px-1">
+                <table className="w-full min-w-[28rem] text-left text-xs sm:min-w-0">
                   <thead>
                     <tr className="border-b">
                       <th className="p-1">Home</th>
                       <th className="p-1">Mode</th>
                       <th className="p-1">P50 / P80</th>
-                      <th className="p-1">Mo. hours</th>
+                      <th className="hidden p-1 sm:table-cell">Mo. hours</th>
                       <th className="p-1">Transport / mo</th>
                       <th className="p-1" />
                     </tr>
                   </thead>
-                  <tbody>
-                    {displayRanked.map((r) => {
-                      const home = homes.find((h) => h.id === r.home.id) ?? r.home
-                      const homeMode = home.mode ?? "cheapest"
-                      const costRank = costRankByHomeId.get(r.home.id) ?? 0
-                      const isExpanded = selectedHomeId === r.home.id
-                      const rowPlan =
-                        isExpanded && selectedPlan ? selectedPlan : r.primary
-                      const selectRow = () => {
-                        if (selectedHomeId === r.home.id) return
-                        setSelectedHomeId(r.home.id)
-                        setSelectedPlan(r.primary)
-                      }
-                      return (
-                        <Fragment key={r.home.id}>
-                          <tr
-                            ref={(el) => {
-                              if (el) rowRefs.current.set(r.home.id, el)
-                              else rowRefs.current.delete(r.home.id)
-                            }}
-                            tabIndex={0}
-                            aria-expanded={isExpanded}
-                            className={`hover:bg-muted/50 cursor-pointer border-b outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset ${
-                              isExpanded ? "bg-muted" : ""
-                            }`}
-                            onClick={selectRow}
-                            onFocus={selectRow}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter" || e.key === " ") {
-                                e.preventDefault()
-                                selectRow()
-                              }
-                            }}
-                          >
-                            <td className="p-1 align-top">
-                              <div
-                                className="space-y-1"
-                                onClick={(e) => e.stopPropagation()}
-                                onKeyDown={(e) => e.stopPropagation()}
-                              >
-                                <div className="text-muted-foreground text-[10px]">
-                                  #{costRank}
-                                </div>
-                                <Input
-                                  className="h-7 min-w-28 text-xs font-medium"
-                                  value={home.label}
-                                  aria-label={`${home.label} label`}
-                                  onChange={(e) =>
-                                    setHomes((prev) =>
-                                      prev.map((x) =>
-                                        x.id === home.id
-                                          ? { ...x, label: e.target.value }
-                                          : x,
-                                      ),
-                                    )
-                                  }
-                                />
-                                <div className="flex gap-1">
-                                  <Input
-                                    className="h-7 text-xs"
-                                    type="number"
-                                    step="any"
-                                    value={home.lat}
-                                    aria-label={`${home.label} latitude`}
-                                    onChange={(e) =>
-                                      setHomes((prev) =>
-                                        prev.map((x) =>
-                                          x.id === home.id
-                                            ? {
-                                                ...x,
-                                                lat: Number(e.target.value),
-                                              }
-                                            : x,
-                                        ),
-                                      )
-                                    }
-                                  />
-                                  <Input
-                                    className="h-7 text-xs"
-                                    type="number"
-                                    step="any"
-                                    value={home.lng}
-                                    aria-label={`${home.label} longitude`}
-                                    onChange={(e) =>
-                                      setHomes((prev) =>
-                                        prev.map((x) =>
-                                          x.id === home.id
-                                            ? {
-                                                ...x,
-                                                lng: Number(e.target.value),
-                                              }
-                                            : x,
-                                        ),
-                                      )
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </td>
-                            <td
-                              className="p-1 align-middle"
-                              onClick={(e) => e.stopPropagation()}
-                              onKeyDown={(e) => e.stopPropagation()}
-                            >
-                              <Select
-                                value={homeMode}
-                                onValueChange={(v) =>
-                                  setHomeMode(home.id, v as CommuteMode)
-                                }
-                              >
-                                <SelectTrigger
-                                  className="h-7 min-w-32 text-xs"
-                                  aria-label={`${home.label} commute mode`}
-                                >
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {COMMUTE_MODES.map((m) => (
-                                    <SelectItem key={m} value={m}>
-                                      {COMMUTE_MODE_LABELS[m]}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </td>
-                            <td className="p-1 align-middle">
-                              {rowPlan.p50Minutes} / {rowPlan.p80Minutes} min
-                            </td>
-                            <td className="p-1 align-middle">
-                              {rowPlan.monthlyHours}
-                            </td>
-                            <td className="p-1 align-middle">
-                              {formatIdr(rowPlan.monthlyCostIdr)}
-                            </td>
-                            <td
-                              className="p-1 align-middle"
-                              onClick={(e) => e.stopPropagation()}
-                              onKeyDown={(e) => e.stopPropagation()}
-                            >
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                type="button"
-                                onClick={() =>
-                                  setHomes((prev) =>
-                                    prev.filter((x) => x.id !== home.id),
-                                  )
-                                }
-                              >
-                                Remove
-                              </Button>
-                            </td>
-                          </tr>
-                          {isExpanded && r.plans.length > 0 && (
-                            <tr className="bg-muted/40 border-b">
-                              <td colSpan={6} className="p-3">
-                                <div className="space-y-2">
-                                  <Label>
-                                    Recommendations for {home.label}
-                                  </Label>
-                                  <div className="flex flex-wrap gap-1">
-                                    {r.plans.map((p) => (
-                                      <Button
-                                        key={p.signature + p.label}
-                                        size="sm"
-                                        variant={
-                                          selectedPlan?.signature ===
-                                            p.signature &&
-                                          selectedPlan?.label === p.label
-                                            ? "default"
-                                            : "outline"
-                                        }
-                                        type="button"
-                                        onClick={() => setSelectedPlan(p)}
-                                      >
-                                        {p.label} · {p.oneWayMinutes}m ·{" "}
-                                        {formatIdr(p.oneWayCostIdr)}
-                                      </Button>
-                                    ))}
-                                  </div>
-                                  {selectedPlan &&
-                                    selectedHomeId === r.home.id && (
-                                      <ol className="text-muted-foreground list-decimal space-y-1 pl-4 text-xs">
-                                        {selectedPlan.legs.map((leg, li) => (
-                                          <li key={li}>
-                                            <span
-                                              className="mr-1 inline-block size-2 rounded-full"
-                                              style={{
-                                                background: TRANSIT_COLORS[
-                                                  leg.kind as TransitSystem
-                                                ]
-                                                  ? TRANSIT_COLORS[
-                                                      leg.kind as TransitSystem
-                                                    ]
-                                                  : leg.kind === "gojek"
-                                                    ? "#22c55e"
-                                                    : "#64748b",
-                                              }}
-                                            />
-                                            {leg.label} —{" "}
-                                            {Math.round(leg.minutes)} min,{" "}
-                                            {formatIdr(leg.costIdr)}
-                                          </li>
-                                        ))}
-                                      </ol>
-                                    )}
-                                </div>
-                              </td>
-                            </tr>
-                          )}
-                        </Fragment>
-                      )
-                    })}
-                  </tbody>
+                  <tbody>{renderResultRows()}</tbody>
                 </table>
               </div>
             )}
           </section>
         </main>
       </div>
+
+      <Dialog open={controlsOpen} onOpenChange={setControlsOpen}>
+        <DialogContent
+          className="flex max-h-[min(90svh,40rem)] w-[calc(100%-1.5rem)] max-w-md flex-col gap-0 overflow-hidden p-0"
+          showCloseButton={false}
+        >
+          <DialogHeader className="border-border shrink-0 space-y-1 border-b p-4 pr-12">
+            <DialogTitle>Controls</DialogTitle>
+            <DialogDescription>
+              Presets, WFO days, and brief fields. Tap the map to place pins.
+            </DialogDescription>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              className="absolute top-2 right-2"
+              onClick={() => setControlsOpen(false)}
+              aria-label="Close controls"
+            >
+              <X className="size-4" />
+            </Button>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 overflow-y-auto p-4 text-sm">
+            {controlsBody}
+            <Separator />
+            <Button variant="outline" size="sm" asChild className="w-fit">
+              <Link to="/admin">Admin</Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <OnboardingDialog
         open={onboardingOpen}

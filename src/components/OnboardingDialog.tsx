@@ -22,7 +22,7 @@ const STEPS = [
   },
   {
     title: "Pin the office, then homes",
-    body: "Click the map or use sidebar presets. Click near an existing home (within ~400 m) to move it. Add as many homes as you like — routes update automatically.",
+    body: "Click the map or use presets. Click near an existing home (within ~400 m) to move it. Add as many homes as you like — routes update automatically.",
     image: "/onboarding/onboarding-02-pins.jpg",
     imageAlt: "Illustration of placing a home pin on the map from presets",
   },
@@ -83,7 +83,7 @@ export function OnboardingDialog({ open, onOpenChange }: OnboardingDialogProps) 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
-        className="gap-0 overflow-hidden p-0 sm:max-w-md"
+        className="max-h-[min(92svh,40rem)] gap-0 overflow-y-auto p-0 sm:max-w-md"
         showCloseButton
       >
         <div className="bg-muted relative aspect-16/10 overflow-hidden">
