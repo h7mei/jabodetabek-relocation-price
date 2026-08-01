@@ -589,6 +589,8 @@ export function MapPage() {
                       const homeMode = home.mode ?? "cheapest"
                       const costRank = costRankByHomeId.get(r.home.id) ?? 0
                       const isExpanded = selectedHomeId === r.home.id
+                      const rowPlan =
+                        isExpanded && selectedPlan ? selectedPlan : r.primary
                       const selectRow = () => {
                         if (selectedHomeId === r.home.id) return
                         setSelectedHomeId(r.home.id)
@@ -707,14 +709,13 @@ export function MapPage() {
                               </Select>
                             </td>
                             <td className="p-1 align-middle">
-                              {r.primary.p50Minutes} / {r.primary.p80Minutes}{" "}
-                              min
+                              {rowPlan.p50Minutes} / {rowPlan.p80Minutes} min
                             </td>
                             <td className="p-1 align-middle">
-                              {r.primary.monthlyHours}
+                              {rowPlan.monthlyHours}
                             </td>
                             <td className="p-1 align-middle">
-                              {formatIdr(r.primary.monthlyCostIdr)}
+                              {formatIdr(rowPlan.monthlyCostIdr)}
                             </td>
                             <td
                               className="p-1 align-middle"
