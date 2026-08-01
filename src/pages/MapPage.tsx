@@ -9,6 +9,10 @@ import {
 } from "react"
 import { Link } from "react-router-dom"
 
+import {
+  hasSeenOnboarding,
+  OnboardingDialog,
+} from "@/components/OnboardingDialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -71,6 +75,9 @@ export function MapPage() {
   const [computing, setComputing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [briefCopied, setBriefCopied] = useState(false)
+  const [onboardingOpen, setOnboardingOpen] = useState(
+    () => !hasSeenOnboarding(),
+  )
   const formId = useId()
   const compareGen = useRef(0)
   const briefCopyTimer = useRef<number | null>(null)
@@ -346,9 +353,19 @@ export function MapPage() {
               <h1 className="font-heading text-base font-semibold tracking-tight leading-snug">
                 Jabodetabek Relocation Price
               </h1>
-              <Button variant="outline" size="sm" className="shrink-0" asChild>
-                <Link to="/admin">Admin</Link>
-              </Button>
+              <div className="flex shrink-0 gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  onClick={() => setOnboardingOpen(true)}
+                >
+                  How to
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/admin">Admin</Link>
+                </Button>
+              </div>
             </div>
             <p className="text-muted-foreground text-xs">
               Pin office + homes · compare commute bands · export a brief
@@ -785,6 +802,11 @@ export function MapPage() {
           </section>
         </main>
       </div>
+
+      <OnboardingDialog
+        open={onboardingOpen}
+        onOpenChange={setOnboardingOpen}
+      />
     </div>
   )
 }
