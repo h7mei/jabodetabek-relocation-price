@@ -1,0 +1,14 @@
+---
+description: Map UX, results copy, and decision-brief honesty
+globs: src/pages/**/*.tsx,src/components/**/*.tsx,src/lib/report.ts
+alwaysApply: false
+---
+
+# UI and trust framing
+
+- Show **P50 and P80** peak one-way minutes; label costs as heuristic estimates.
+- Keep in-UI caveats near results (PRD F23): not live Grab/Google ETAs; rain/peak variance.
+- Decision brief (`src/lib/report.ts`) must repeat the same honesty — plain `.txt` download/copy, not HTML.
+- Map flow: office pin first, then homes; move-home click threshold 400 m; unlimited homes.
+- Prefer existing mapcn/MapLibre + shadcn patterns; avoid dashboard chrome and fake “live traffic” badges.
+- `/admin` is localStorage master presets only — never imply accounts or multi-tenant admin.

@@ -1,0 +1,15 @@
+---
+description: Core product scope, trust framing, and doc ownership for this SPA
+alwaysApply: true
+---
+
+# Project constraints
+
+- **Client-only SPA** (React 19 + Vite + shadcn/ui + mapcn/MapLibre). Do not invent a backend, auth, DB, or required env vars unless PRODUCT/PRD explicitly expand scope.
+- **Trust framing:** commute figures are P50/P80 bands and heuristic fares — never claim live Grab/Google ETAs or live GTFS.
+- **MVP non-goals:** AI chat, housing listings scrape, accounts/teams, employer dashboards, multi-city beyond Jabodetabek.
+- Prefer editing existing `src/lib/*` planners, `src/pages/MapPage.tsx`, and `src/master/*` over adding state libraries or new frameworks.
+- Transit source of truth: `public/data/transit/` GeoJSON (`[lng, lat]`). See `public/data/README.md`.
+- Decision brief export is plain `.txt` (`src/lib/report.ts`), not HTML.
+- Doc ownership: PRODUCT (wedge), PRD (acceptance), RFC-001 (math), SDLC (rebuild), TDD (tests), VALIDATION (kill/pivot). Start at `docs/INDEX.md`.
+- Math/radius/ranking changes → update `docs/RFC-001-planner.md` (and TDD goldens when harness exists) in the same change.

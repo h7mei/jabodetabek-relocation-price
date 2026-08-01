@@ -1,0 +1,20 @@
+---
+description: Transit GeoJSON layout and coordinate contract
+globs: public/data/**/*
+alwaysApply: false
+---
+
+# Transit GeoJSON
+
+Full contract: `public/data/README.md`. Catalog: `public/data/transit/catalog.json`.
+
+## Hard rules
+
+1. Coordinates are always **`[longitude, latitude]`** — Jakarta example `[106.8228, -6.2025]`. Never `[lat, lng]`.
+2. Per-system folders only: `krl/`, `mrt/`, `lrt/`, `transjakarta/` — each with `stops.geojson` + `network.geojson`.
+3. Root must be a valid `FeatureCollection`; no trailing commas / comments.
+4. Do not mix systems across folders.
+5. Align stop points with nearby vertices on that system’s network so snaps work.
+6. New system: folder + catalog entry + `TransitSystem` / colors in `src/types.ts` and `src/lib/routing.ts`.
+
+Hubs for transfers are inferred from name keywords (manggarai, sudirman, dukuh atas, etc.) — do not invent interchange geometry.

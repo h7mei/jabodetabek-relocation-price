@@ -2,6 +2,17 @@
 
 Lean notes for humans and agents working this repo. Scope truth: [PRODUCT.md](./PRODUCT.md) + [PRD.md](./PRD.md).
 
+## Project rules & skill
+
+| Path                                 | Role                                                    |
+| ------------------------------------ | ------------------------------------------------------- |
+| `.cursor/rules/project.mdc`          | Always-on scope, trust framing, doc ownership           |
+| `.cursor/rules/planner.mdc`          | RFC-001 math when editing `src/lib` planners            |
+| `.cursor/rules/transit-data.mdc`     | GeoJSON `[lng, lat]` contract                           |
+| `.cursor/rules/ui-trust.mdc`         | Results/brief honesty on map UI                         |
+| `.cursor/skills/planner-invariants/` | Planner math: golden → RFC → `pnpm test`                |
+| `.cursor/skills/stack-hardening/`    | Engineering gate: lint/test/typecheck/build + CI parity |
+
 ---
 
 ## Constraints (do not invent)
