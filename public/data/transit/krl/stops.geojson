@@ -1,0 +1,349 @@
+{
+  "type": "FeatureCollection",
+  "name": "jabodetabek-krl-stops",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Jakarta Kota" },
+      "geometry": { "type": "Point", "coordinates": [106.8314, -6.1375] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Jayakarta" },
+      "geometry": { "type": "Point", "coordinates": [106.8268, -6.1448] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Mangga Besar" },
+      "geometry": { "type": "Point", "coordinates": [106.8255, -6.1522] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Sawah Besar" },
+      "geometry": { "type": "Point", "coordinates": [106.825, -6.1589] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Juanda" },
+      "geometry": { "type": "Point", "coordinates": [106.8267, -6.1667] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Gondangdia" },
+      "geometry": { "type": "Point", "coordinates": [106.8325, -6.185] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Cikini" },
+      "geometry": { "type": "Point", "coordinates": [106.84, -6.1917] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Manggarai" },
+      "geometry": { "type": "Point", "coordinates": [106.8502, -6.2099] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Tebet" },
+      "geometry": { "type": "Point", "coordinates": [106.8483, -6.2267] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Cawang" },
+      "geometry": { "type": "Point", "coordinates": [106.8583, -6.2425] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Duren Kalibata" },
+      "geometry": { "type": "Point", "coordinates": [106.855, -6.255] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Pasar Minggu Baru" },
+      "geometry": { "type": "Point", "coordinates": [106.845, -6.27] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Pasar Minggu" },
+      "geometry": { "type": "Point", "coordinates": [106.845, -6.2833] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Tanjung Barat" },
+      "geometry": { "type": "Point", "coordinates": [106.845, -6.3083] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Lenteng Agung" },
+      "geometry": { "type": "Point", "coordinates": [106.8383, -6.3333] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Universitas Pancasila" },
+      "geometry": { "type": "Point", "coordinates": [106.8333, -6.35] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Universitas Indonesia" },
+      "geometry": { "type": "Point", "coordinates": [106.8317, -6.3625] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Pondok Cina" },
+      "geometry": { "type": "Point", "coordinates": [106.8333, -6.37] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Depok Baru" },
+      "geometry": { "type": "Point", "coordinates": [106.8167, -6.3833] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Depok" },
+      "geometry": { "type": "Point", "coordinates": [106.8142, -6.3917] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Bojong Gede" },
+      "geometry": { "type": "Point", "coordinates": [106.8, -6.4667] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Cilebut" },
+      "geometry": { "type": "Point", "coordinates": [106.795, -6.5167] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Bogor" },
+      "geometry": { "type": "Point", "coordinates": [106.7925, -6.595] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Kampung Bandan" },
+      "geometry": { "type": "Point", "coordinates": [106.835, -6.1333] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Angke" },
+      "geometry": { "type": "Point", "coordinates": [106.8, -6.145] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Duri" },
+      "geometry": { "type": "Point", "coordinates": [106.8, -6.155] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Tanah Abang" },
+      "geometry": { "type": "Point", "coordinates": [106.8108, -6.1867] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Karet" },
+      "geometry": { "type": "Point", "coordinates": [106.8167, -6.2] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. BNI City" },
+      "geometry": { "type": "Point", "coordinates": [106.8217, -6.2017] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Sudirman" },
+      "geometry": { "type": "Point", "coordinates": [106.8233, -6.2033] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Mampang" },
+      "geometry": { "type": "Point", "coordinates": [106.83, -6.21] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Matraman" },
+      "geometry": { "type": "Point", "coordinates": [106.855, -6.205] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Jatinegara" },
+      "geometry": { "type": "Point", "coordinates": [106.8683, -6.215] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Klender" },
+      "geometry": { "type": "Point", "coordinates": [106.89, -6.2167] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Buaran" },
+      "geometry": { "type": "Point", "coordinates": [106.905, -6.22] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Klender Baru" },
+      "geometry": { "type": "Point", "coordinates": [106.92, -6.225] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Cakung" },
+      "geometry": { "type": "Point", "coordinates": [106.94, -6.23] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Kranji" },
+      "geometry": { "type": "Point", "coordinates": [106.965, -6.2333] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Bekasi" },
+      "geometry": { "type": "Point", "coordinates": [106.9992, -6.2367] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Bekasi Timur" },
+      "geometry": { "type": "Point", "coordinates": [107.02, -6.24] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Tambun" },
+      "geometry": { "type": "Point", "coordinates": [107.05, -6.25] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Cibitung" },
+      "geometry": { "type": "Point", "coordinates": [107.0833, -6.26] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Metland Telagamurni" },
+      "geometry": { "type": "Point", "coordinates": [107.1, -6.265] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Cikarang" },
+      "geometry": { "type": "Point", "coordinates": [107.15, -6.27] }
+    },
+
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Palmerah" },
+      "geometry": { "type": "Point", "coordinates": [106.795, -6.2] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Kebayoran" },
+      "geometry": { "type": "Point", "coordinates": [106.7833, -6.2333] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Pondok Ranji" },
+      "geometry": { "type": "Point", "coordinates": [106.75, -6.2667] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Jurangmangu" },
+      "geometry": { "type": "Point", "coordinates": [106.7333, -6.2833] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Sudimara" },
+      "geometry": { "type": "Point", "coordinates": [106.7167, -6.3] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Rawa Buntu" },
+      "geometry": { "type": "Point", "coordinates": [106.7, -6.3167] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Serpong" },
+      "geometry": { "type": "Point", "coordinates": [106.6667, -6.3167] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Cisauk" },
+      "geometry": { "type": "Point", "coordinates": [106.65, -6.3333] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Parung Panjang" },
+      "geometry": { "type": "Point", "coordinates": [106.55, -6.35] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Tigaraksa" },
+      "geometry": { "type": "Point", "coordinates": [106.4667, -6.2667] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Rangkasbitung" },
+      "geometry": { "type": "Point", "coordinates": [106.25, -6.35] }
+    },
+
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Grogol" },
+      "geometry": { "type": "Point", "coordinates": [106.79, -6.16] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Pesing" },
+      "geometry": { "type": "Point", "coordinates": [106.775, -6.16] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Taman Kota" },
+      "geometry": { "type": "Point", "coordinates": [106.75, -6.155] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Bojong Indah" },
+      "geometry": { "type": "Point", "coordinates": [106.7333, -6.155] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Rawa Buaya" },
+      "geometry": { "type": "Point", "coordinates": [106.7167, -6.155] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Kalideres" },
+      "geometry": { "type": "Point", "coordinates": [106.7, -6.155] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Poris" },
+      "geometry": { "type": "Point", "coordinates": [106.6667, -6.1667] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Batu Ceper" },
+      "geometry": { "type": "Point", "coordinates": [106.65, -6.1667] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Tanah Tinggi" },
+      "geometry": { "type": "Point", "coordinates": [106.6333, -6.175] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Tangerang" },
+      "geometry": { "type": "Point", "coordinates": [106.63, -6.1783] }
+    },
+
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Ancol" },
+      "geometry": { "type": "Point", "coordinates": [106.845, -6.125] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Jakarta International Stadium" },
+      "geometry": { "type": "Point", "coordinates": [106.85, -6.12] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "system": "krl", "name": "St. Tanjung Priok" },
+      "geometry": { "type": "Point", "coordinates": [106.87, -6.11] }
+    }
+  ]
+}

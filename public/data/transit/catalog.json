@@ -1,0 +1,24 @@
+{
+  "systems": [
+    {
+      "id": "krl",
+      "label": "KRL",
+      "folder": "krl"
+    },
+    {
+      "id": "mrt",
+      "label": "MRT",
+      "folder": "mrt"
+    },
+    {
+      "id": "lrt",
+      "label": "LRT",
+      "folder": "lrt"
+    },
+    {
+      "id": "transjakarta",
+      "label": "TransJakarta",
+      "folder": "transjakarta"
+    }
+  ]
+}

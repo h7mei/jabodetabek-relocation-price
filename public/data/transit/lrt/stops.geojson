@@ -1,0 +1,204 @@
+{
+  "type": "FeatureCollection",
+  "name": "jabodetabek-lrt-stops",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Dukuh Atas BNI"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.82565, -6.20471]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Setiabudi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.830211, -6.209277]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Rasuna Said"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83226, -6.22175]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Kuningan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.833175, -6.228881]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Pancoran Bank BJB"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83847, -6.24213]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Cikoko"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.857102, -6.243476]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Ciliwung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.864131, -6.243477]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Cawang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.872386, -6.246225]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT TMII"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.880535, -6.292874]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Kampung Rambutan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.884325, -6.309541]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Ciracas"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8867, -6.3237]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Harjamukti"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.895623, -6.373988]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Halim"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.885241, -6.246471]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Jati Bening Baru"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.927679, -6.257775]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Cikunir 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.951094, -6.256278]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Cikunir 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.96321, -6.25465]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Bekasi Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.990076, -6.252926]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "lrt",
+        "name": "LRT Jati Mulya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [107.021432, -6.263952]
+      }
+    }
+  ]
+}

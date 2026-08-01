@@ -1,0 +1,149 @@
+{
+  "type": "FeatureCollection",
+  "name": "jabodetabek-mrt-stops",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Lebak Bulus Bank Syariah Indonesia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.774937, -6.289254]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Fatmawati Indomaret"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.792466, -6.292429]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Cipete Raya Tuku"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.7975, -6.2774]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Haji Nawi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.7973162, -6.2667982]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Blok A"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.797134, -6.2555837]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Blok M BCA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.7982103, -6.2445265]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT ASEAN Headquarters"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.7985954, -6.239085]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Senayan Mastercard"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.802456, -6.226683]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Istora Mandiri"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.808573, -6.222331]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Bendungan Hilir"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8173187, -6.2154465]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Setiabudi Astra"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8217, -6.2091]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Dukuh Atas BNI"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.822746, -6.200786]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "mrt",
+        "name": "MRT Bundaran HI Bank Jakarta"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8228579, -6.1934095]
+      }
+    }
+  ]
+}

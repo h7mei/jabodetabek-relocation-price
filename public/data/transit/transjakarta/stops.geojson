@@ -1,0 +1,2547 @@
+{
+  "type": "FeatureCollection",
+  "name": "jabodetabek-transjakarta-stops",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Ancol"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83039, -6.127563]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Arteri"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.777588, -6.218424]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte BNN Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.873296, -6.246703]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte BNN Arah Timur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.873063, -6.246222]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Benhil 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8154, -6.217304]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Bermis"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.898465, -6.178218]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Bidara Cina"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.867262, -6.229726]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Blok M"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.80175, -6.243312]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Buaran"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.917681, -6.215137]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Buncit Indah"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.830266, -6.274343]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Bundaran HI Astra"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.82303, -6.192971]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Bundaran Senayan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.800905, -6.227941]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Bungur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.781616, -6.252688]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte CBD Ciledug"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.70907, -6.223635]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte CSW 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.798364, -6.239869]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cawang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.871203, -6.245869]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cawang Baru"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.868804, -6.243619]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cawang Cililitan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.869983, -6.257756]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cawang Sentral"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.87362, -6.250255]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cempaka Baru"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.86661, -6.170428]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cempaka Mas"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.875923, -6.166614]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cempaka Putih"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.876412, -6.174225]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cikoko Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.858187, -6.243376]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cililitan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.866388, -6.262484]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Ciliwung Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.86356, -6.243292]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cipinang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.889888, -6.21366]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Cipulir"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.765415, -6.237767]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Damai"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.77514, -6.163376]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Danau Agung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.858043, -6.146869]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Danau Sunter"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.856896, -6.14122]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Denpasar Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.822059, -6.233536]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Denpasar Arah Timur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.821614, -6.232579]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Dukuh Atas 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.822295, -6.205627]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Duren Tiga"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.826951, -6.252331]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Duri Kepa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.76842, -6.185266]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Flyover Cipinang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.882297, -6.214657]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Flyover Jatinegara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.873769, -6.215254]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Flyover Kuningan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.827655, -6.202779]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Flyover Pondok Kopi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.93054, -6.216689]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Flyover Pramuka"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.854454, -6.198864]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Flyover Raya Bogor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8657, -6.3065]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Galunggung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.823381, -6.2044]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Galur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.854857, -6.174422]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Gambir"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8304, -6.174612]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Gedong Panjang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.806024, -6.132576]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Gelanggang Remaja"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.867994, -6.235433]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Gelora Bung Karno"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.805761, -6.224286]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Glodok"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.815506, -6.144491]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Grogol"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.78976, -6.166769]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Gunung Sahari"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.832371, -6.136813]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Halim"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.877984, -6.239069]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Halimun 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.834732, -6.205187]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Halimun 4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.832571, -6.20509]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Harmoni"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.819961, -6.162764]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Indosiar 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.77598, -6.163492]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Istiqlal"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83093, -6.172252]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte JORR"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.754899, -6.236138]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jakarta International Stadium"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.85587, -6.126689]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jamsostek 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.820842, -6.232321]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jati Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.82362, -6.290953]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jati Padang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.826286, -6.285343]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jatinegara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.868087, -6.221451]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jelambar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.786513, -6.166514]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jembatan Baru"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.730332, -6.154762]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jembatan Besi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.794881, -6.152006]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jembatan Dua"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.793491, -6.14328]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jembatan Gantung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.749466, -6.155493]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jembatan Item"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.855139, -6.130986]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jembatan Merah"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.834276, -6.146731]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Jembatan Tiga Arah Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.79267, -6.133383]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Juanda"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.830851, -6.168049]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kali Besar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.81143, -6.135355]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kali Grogol Arah Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.7904, -6.16106]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kalideres"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.7055, -6.154431]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kampung Melayu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.866954, -6.224625]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kampung Rambutan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.882101, -6.309801]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kampung Sumur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.911875, -6.214408]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Karet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.820052, -6.212511]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Karet Kuningan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.830727, -6.216644]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kayu Jati"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.883674, -6.193211]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kayu Putih Rawasari"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.875382, -6.187474]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kebayoran"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.783208, -6.238352]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kebayoran Lama"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.777528, -6.238299]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kebon Jeruk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.76887, -6.194311]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kebon Nanas"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.876339, -6.231671]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kebon Sirih Arah Selatan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.82326, -6.184784]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kedoya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.762974, -6.164433]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kedoya Panjang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.765816, -6.174501]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kejaksaan Agung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.798482, -6.24046]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kelapa Dua Sasak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.769487, -6.20556]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kemanggisan Arah Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.796939, -6.18991]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kemayoran"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.85145, -6.158896]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kesatrian"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.859218, -6.20856]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Klender"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.903085, -6.213605]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kodamar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.881665, -6.16205]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Koja Arah Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.893085, -6.114165]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Komdak 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.81407, -6.222333]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Komdak 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.81426, -6.221715]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kota"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.814876, -6.136827]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kota Bambu Arah Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.796739, -6.184506]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kramat Jati"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.866674, -6.26876]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kramat Sentiong"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.845898, -6.188017]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kuningan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.833168, -6.228755]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Kuningan Madya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.830459, -6.213407]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Landasan Pacu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.85423, -6.152119]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Lapangan Banteng"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83901, -6.16607]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Layur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.899097, -6.193489]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Lebak Bulus"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.774076, -6.28938]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte MH Thamrin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.82304, -6.188262]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Makasar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.881172, -6.290173]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Mambo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.892389, -6.110132]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Mampang Prapatan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.825685, -6.242663]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Mangga Besar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.817543, -6.153256]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Mangga Dua"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.826003, -6.136117]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Mangga Dua Raya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.817935, -6.13757]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Manggarai"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.847468, -6.208804]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Masjid Agung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.798482, -6.236477]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Matraman"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.854395, -6.200022]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Matraman Baru"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.861112, -6.212879]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Mayestik"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.790748, -6.241883]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Monumen Nasional"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.822912, -6.176251]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Museum Sejarah Jakarta"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.81214, -6.133882]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte PGC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8657, -6.2619]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pademangan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.831591, -6.133712]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pakin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.804748, -6.127951]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pal Putih"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.843967, -6.184657]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pancoran Barat 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83791, -6.241969]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pancoran Tugu Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.84388, -6.2433]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Baru"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83483, -6.166129]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Baru Timur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.838066, -6.162278]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Cempaka Putih"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.862485, -6.172374]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Enjo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.878184, -6.214892]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Genjing"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.860875, -6.19439]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Induk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.8721, -6.294223]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Pulo Gadung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.905867, -6.187451]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Rumput"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.841128, -6.207067]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Santa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.807773, -6.239168]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pasar Senen"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.842501, -6.178223]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Paseban"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.850967, -6.196822]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Patra Kuningan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.832079, -6.232627]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pecenongan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.828191, -6.167707]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pedati Prumpung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.874368, -6.220159]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pedongkelan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.88244, -6.167996]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pejambon"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83472, -6.173503]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pejaten"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.829687, -6.278385]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pemuda Merdeka"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.904849, -6.192395]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pemuda Pramuka"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.874931, -6.192821]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pemuda Rawamangun"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.891694, -6.193435]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Penggilingan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.939655, -6.214137]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Penjaringan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.791937, -6.126314]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Perintis Kemerdekaan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.88869, -6.171755]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Permata Hijau"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.783239, -6.221458]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pesakih"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.715251, -6.154772]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Petamburan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.799812, -6.201963]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Petojo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.816979, -6.169957]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Petukangan Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.7476, -6.236393]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pinang Ranti"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.886348, -6.291098]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pisangan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.873771, -6.205525]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pluit"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.791197, -6.115789]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pluit Selatan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.79971, -6.125236]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Plumpang Arah Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.89373, -6.128475]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Polda Metro Jaya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.81031, -6.221129]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pondok Indah"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.783614, -6.267224]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pondok Pinang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.772028, -6.282128]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pos Pengumben"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.772231, -6.212954]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pramuka Sari"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.868584, -6.192155]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pulo Gadung"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.90889, -6.18315]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pulo Gebang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.95327, -6.213309]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pulo Mas"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.892757, -6.174765]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pulo Mas Bypass"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.875987, -6.176988]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Pulo Nangka"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.7381, -6.154594]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Puri Beta 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.72602, -6.230596]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte RSPAD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83674, -6.175485]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Ragunan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.81899, -6.305728]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Rasuna Said"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.832224, -6.221593]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Rawa Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.816194, -6.238912]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Rawa Buaya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.726196, -6.153887]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Rawa Selatan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.858102, -6.173958]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Rawamangun"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.880338, -6.192881]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Roxy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.796776, -6.166273]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Salemba"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.848859, -6.193393]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Sawah Besar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.818702, -6.157366]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Senayan Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.808428, -6.213962]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Senen Raya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.84023, -6.176251]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Senen Sentral"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.842002, -6.178152]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Seskoal"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.771219, -6.238018]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Setiabudi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.830202, -6.209157]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Simpang Buaran"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.924415, -6.215999]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Simpang Cawang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.875959, -6.244773]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Simpang Cempaka"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.879175, -6.165886]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Simpang Kuningan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.827929, -6.237267]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Simpang Pramuka"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.874024, -6.192134]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Simpang Ragunan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.822111, -6.294596]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Simprug"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.786458, -6.233916]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Stasiun Jatinegara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.868032, -6.215615]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Stasiun Klender"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.898645, -6.21353]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Sumur Batu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.87029, -6.168716]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Sumur Bor"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.719288, -6.153004]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Sunter Boulevard Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.888982, -6.149644]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Sunter Karya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.870787, -6.137576]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Sunter Kelapa Gading Arah Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.890714, -6.14293]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Sunter Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.859198, -6.139717]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Swadarma"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.760657, -6.237505]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Taman Kota"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.757897, -6.157159]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Taman Sari"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.816732, -6.149291]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tanah Kusir"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.781676, -6.256997]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tanah Merdeka Arah Timur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.87389, -6.307866]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tanah Tinggi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.852096, -6.171363]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tanjung Duren Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.792248, -6.175635]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tanjung Duren Arah Timur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.793104, -6.175783]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tanjung Priok"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.882156, -6.10956]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tarakan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.810112, -6.171114]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tebet Eco Park Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.85212, -6.243338]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tegal Mampang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.830969, -6.24021]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tegal Parang Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.83022, -6.238863]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tegalan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.857094, -6.20312]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tomang Raya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.800344, -6.176833]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Tosari"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.823131, -6.19695]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Trikora"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.868061, -6.301977]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Underpass Kuningan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.829043, -6.234712]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Underpass Lebak Bulus"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.779952, -6.286762]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Utan Kayu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.864555, -6.192651]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Utan Kayu Rawamangun"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.874008, -6.197544]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Velbak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.785479, -6.239378]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Velodrome"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.888298, -6.193414]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Walikota Jakarta Timur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.945349, -6.212554]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Walikota Jakarta Utara Arah Utara"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.893125, -6.118845]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Warung Buncit"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.828067, -6.25697]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Warung Jati"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.829762, -6.262377]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Widya Chandra Arah Barat"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.817607, -6.2274]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "system": "transjakarta",
+        "name": "Halte Widya Chandra Arah Timur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.817397, -6.226484]
+      }
+    }
+  ]
+}
