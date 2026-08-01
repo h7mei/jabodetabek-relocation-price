@@ -1,5 +1,14 @@
-import { DEFAULT_MASTER, MASTER_STORAGE_KEY } from "@/master/defaults"
-import type { MasterData } from "@/types"
+import {
+  DEFAULT_HOMES,
+  DEFAULT_MASTER,
+  DEFAULT_OFFICES,
+  MASTER_STORAGE_KEY,
+} from "@/master/defaults"
+import type { MasterData, PresetPlace } from "@/types"
+
+/** Pre-expansion chip sets — swap for defaults when still untouched */
+const LEGACY_OFFICE_IDS = new Set(["scbd", "kuningan", "bsd"])
+const LEGACY_HOME_IDS = new Set(["bekasi-barat", "depok", "tangerang", "bogor"])
 
 function isMasterData(v: unknown): v is MasterData {
   if (!v || typeof v !== "object") return false
@@ -12,6 +21,20 @@ function isMasterData(v: unknown): v is MasterData {
   )
 }
 
+function resolvePresets(
+  saved: PresetPlace[],
+  legacyIds: Set<string>,
+  next: PresetPlace[]
+): PresetPlace[] {
+  if (
+    saved.length === legacyIds.size &&
+    saved.every((p) => legacyIds.has(p.id))
+  ) {
+    return structuredClone(next)
+  }
+  return saved
+}
+
 export function loadMaster(): MasterData {
   try {
     const raw = localStorage.getItem(MASTER_STORAGE_KEY)
@@ -22,6 +45,12 @@ export function loadMaster(): MasterData {
       ...structuredClone(DEFAULT_MASTER),
       ...parsed,
       pricing: { ...DEFAULT_MASTER.pricing, ...parsed.pricing },
+      offices: resolvePresets(
+        parsed.offices,
+        LEGACY_OFFICE_IDS,
+        DEFAULT_OFFICES
+      ),
+      homes: resolvePresets(parsed.homes, LEGACY_HOME_IDS, DEFAULT_HOMES),
     }
   } catch {
     return structuredClone(DEFAULT_MASTER)

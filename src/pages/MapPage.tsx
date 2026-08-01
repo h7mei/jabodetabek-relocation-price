@@ -1,4 +1,12 @@
-import { lazy, Suspense, useEffect, useId, useRef, useState } from "react"
+import {
+  Fragment,
+  lazy,
+  Suspense,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react"
 import { Link } from "react-router-dom"
 
 import { Badge } from "@/components/ui/badge"
@@ -73,6 +81,7 @@ export function MapPage() {
   selectedHomeIdRef.current = selectedHomeId
   const pendingSelectHomeIdRef = useRef<string | null>(null)
   const resultsRef = useRef<HTMLElement>(null)
+  const rowRefs = useRef<Map<string, HTMLTableRowElement>>(new Map())
   const lastFocusedHomesKey = useRef("")
 
   useEffect(() => {
@@ -83,17 +92,27 @@ export function MapPage() {
       )
   }, [])
 
-  // After new home placement finishes computing, focus the results board
+  // After new home placement finishes computing, put newest row at top of results
   useEffect(() => {
-    if (computing || ranked.length === 0) return
-    const key = homes.map((h) => `${h.id}:${h.lat.toFixed(5)},${h.lng.toFixed(5)}`).join("|")
+    if (computing || ranked.length === 0 || !selectedHomeId) return
+    const key = homes
+      .map((h) => `${h.id}:${h.lat.toFixed(5)},${h.lng.toFixed(5)}`)
+      .join("|")
     if (!key || key === lastFocusedHomesKey.current) return
     lastFocusedHomesKey.current = key
-    const el = resultsRef.current
-    if (!el) return
-    el.scrollIntoView({ behavior: "smooth", block: "nearest" })
-    el.focus({ preventScroll: true })
-  }, [computing, ranked, homes])
+    const section = resultsRef.current
+    const row = rowRefs.current.get(selectedHomeId)
+    if (!section) return
+    section.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    if (row) {
+      const sectionTop = section.getBoundingClientRect().top
+      const rowTop = row.getBoundingClientRect().top
+      section.scrollTop += rowTop - sectionTop - 8
+      row.focus({ preventScroll: true })
+    } else {
+      section.focus({ preventScroll: true })
+    }
+  }, [computing, ranked, homes, selectedHomeId])
 
   // Auto-compute whenever office + homes (and inputs) change
   useEffect(() => {
@@ -269,6 +288,30 @@ export function MapPage() {
     )
   }
 
+  const resetScenario = () => {
+    compareGen.current += 1
+    pendingSelectHomeIdRef.current = null
+    lastFocusedHomesKey.current = ""
+    setOffice(null)
+    setHomes([])
+    setStep("office")
+    setSalary(DEFAULT_SALARY)
+    setWfoDays(DEFAULT_WFO_DAYS)
+    setName("")
+    setCompany("")
+    setPtEnabled({
+      krl: false,
+      mrt: false,
+      lrt: false,
+      transjakarta: false,
+    })
+    setRanked([])
+    setSelectedHomeId(null)
+    setSelectedPlan(null)
+    setComputing(false)
+    setError(null)
+  }
+
   const exportBrief = () => {
     if (!office || !ranked.length) return
     const text = buildDecisionBrief({
@@ -282,7 +325,15 @@ export function MapPage() {
     downloadText("decision-brief.txt", text)
   }
 
-  const activeResult = ranked.find((r) => r.home.id === selectedHomeId)
+  // Newest placement first; cost rank kept for # badges / brief
+  const costRankByHomeId = new Map(
+    ranked.map((r, i) => [r.home.id, i + 1]),
+  )
+  const homeOrder = new Map(homes.map((h, i) => [h.id, i]))
+  const displayRanked = [...ranked].sort(
+    (a, b) =>
+      (homeOrder.get(b.home.id) ?? 0) - (homeOrder.get(a.home.id) ?? 0),
+  )
 
   return (
     <div className="bg-background text-foreground flex h-svh flex-col">
@@ -303,7 +354,18 @@ export function MapPage() {
           </div>
 
           <div>
-            <p className="mb-1 font-medium">Placement</p>
+            <div className="mb-1 flex items-center justify-between gap-2">
+              <p className="font-medium">Placement</p>
+              <Button
+                size="sm"
+                variant="outline"
+                type="button"
+                disabled={!office && homes.length === 0 && ranked.length === 0}
+                onClick={resetScenario}
+              >
+                Reset
+              </Button>
+            </div>
             <p className="text-muted-foreground text-xs">
               {step === "office" && "Click map to place office"}
               {step === "homes" &&
@@ -516,224 +578,252 @@ export function MapPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {ranked.map((r, i) => {
+                    {displayRanked.map((r) => {
                       const home = homes.find((h) => h.id === r.home.id) ?? r.home
                       const homeMode = home.mode ?? "cheapest"
+                      const costRank = costRankByHomeId.get(r.home.id) ?? 0
+                      const isExpanded = selectedHomeId === r.home.id
+                      const selectRow = () => {
+                        if (selectedHomeId === r.home.id) return
+                        setSelectedHomeId(r.home.id)
+                        setSelectedPlan(r.primary)
+                      }
                       return (
-                        <tr
-                          key={r.home.id}
-                          className={`hover:bg-muted/50 cursor-pointer border-b ${
-                            selectedHomeId === r.home.id ? "bg-muted" : ""
-                          }`}
-                          onClick={() => {
-                            setSelectedHomeId(r.home.id)
-                            setSelectedPlan(r.primary)
-                            resultsRef.current?.focus({ preventScroll: true })
-                          }}
-                        >
-                          <td className="p-1 align-top">
-                            <div
-                              className="space-y-1"
+                        <Fragment key={r.home.id}>
+                          <tr
+                            ref={(el) => {
+                              if (el) rowRefs.current.set(r.home.id, el)
+                              else rowRefs.current.delete(r.home.id)
+                            }}
+                            tabIndex={0}
+                            aria-expanded={isExpanded}
+                            className={`hover:bg-muted/50 cursor-pointer border-b outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset ${
+                              isExpanded ? "bg-muted" : ""
+                            }`}
+                            onClick={selectRow}
+                            onFocus={selectRow}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault()
+                                selectRow()
+                              }
+                            }}
+                          >
+                            <td className="p-1 align-top">
+                              <div
+                                className="space-y-1"
+                                onClick={(e) => e.stopPropagation()}
+                                onKeyDown={(e) => e.stopPropagation()}
+                              >
+                                <div className="text-muted-foreground text-[10px]">
+                                  #{costRank}
+                                </div>
+                                <Input
+                                  className="h-7 min-w-28 text-xs font-medium"
+                                  value={home.label}
+                                  aria-label={`${home.label} label`}
+                                  onChange={(e) =>
+                                    setHomes((prev) =>
+                                      prev.map((x) =>
+                                        x.id === home.id
+                                          ? { ...x, label: e.target.value }
+                                          : x,
+                                      ),
+                                    )
+                                  }
+                                />
+                                <div className="flex gap-1">
+                                  <Input
+                                    className="h-7 text-xs"
+                                    type="number"
+                                    step="any"
+                                    value={home.lat}
+                                    aria-label={`${home.label} latitude`}
+                                    onChange={(e) =>
+                                      setHomes((prev) =>
+                                        prev.map((x) =>
+                                          x.id === home.id
+                                            ? {
+                                                ...x,
+                                                lat: Number(e.target.value),
+                                              }
+                                            : x,
+                                        ),
+                                      )
+                                    }
+                                  />
+                                  <Input
+                                    className="h-7 text-xs"
+                                    type="number"
+                                    step="any"
+                                    value={home.lng}
+                                    aria-label={`${home.label} longitude`}
+                                    onChange={(e) =>
+                                      setHomes((prev) =>
+                                        prev.map((x) =>
+                                          x.id === home.id
+                                            ? {
+                                                ...x,
+                                                lng: Number(e.target.value),
+                                              }
+                                            : x,
+                                        ),
+                                      )
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            </td>
+                            <td
+                              className="p-1 align-middle"
                               onClick={(e) => e.stopPropagation()}
                               onKeyDown={(e) => e.stopPropagation()}
                             >
-                              <div className="text-muted-foreground text-[10px]">
-                                #{i + 1}
-                              </div>
+                              <Select
+                                value={homeMode}
+                                onValueChange={(v) =>
+                                  setHomeMode(home.id, v as CommuteMode)
+                                }
+                              >
+                                <SelectTrigger
+                                  className="h-7 min-w-32 text-xs"
+                                  aria-label={`${home.label} commute mode`}
+                                >
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {COMMUTE_MODES.map((m) => (
+                                    <SelectItem key={m} value={m}>
+                                      {COMMUTE_MODE_LABELS[m]}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </td>
+                            <td className="p-1 align-middle">
+                              {r.primary.p50Minutes} / {r.primary.p80Minutes}{" "}
+                              min
+                            </td>
+                            <td className="p-1 align-middle">
+                              {r.primary.monthlyHours}
+                            </td>
+                            <td className="p-1 align-middle">
+                              {formatIdr(r.primary.monthlyCostIdr)}
+                            </td>
+                            <td
+                              className="p-1 align-middle"
+                              onClick={(e) => e.stopPropagation()}
+                              onKeyDown={(e) => e.stopPropagation()}
+                            >
                               <Input
-                                className="h-7 min-w-28 text-xs font-medium"
-                                value={home.label}
-                                aria-label={`Home ${i + 1} label`}
+                                className="h-7 w-28 text-xs"
+                                type="number"
+                                value={home.rentIdr ?? ""}
+                                placeholder="optional"
+                                aria-label={`${home.label} rent per month`}
                                 onChange={(e) =>
                                   setHomes((prev) =>
                                     prev.map((x) =>
                                       x.id === home.id
-                                        ? { ...x, label: e.target.value }
+                                        ? {
+                                            ...x,
+                                            rentIdr: e.target.value
+                                              ? Number(e.target.value)
+                                              : undefined,
+                                          }
                                         : x,
                                     ),
                                   )
                                 }
                               />
-                              <div className="flex gap-1">
-                                <Input
-                                  className="h-7 text-xs"
-                                  type="number"
-                                  step="any"
-                                  value={home.lat}
-                                  aria-label={`${home.label} latitude`}
-                                  onChange={(e) =>
-                                    setHomes((prev) =>
-                                      prev.map((x) =>
-                                        x.id === home.id
-                                          ? {
-                                              ...x,
-                                              lat: Number(e.target.value),
-                                            }
-                                          : x,
-                                      ),
-                                    )
-                                  }
-                                />
-                                <Input
-                                  className="h-7 text-xs"
-                                  type="number"
-                                  step="any"
-                                  value={home.lng}
-                                  aria-label={`${home.label} longitude`}
-                                  onChange={(e) =>
-                                    setHomes((prev) =>
-                                      prev.map((x) =>
-                                        x.id === home.id
-                                          ? {
-                                              ...x,
-                                              lng: Number(e.target.value),
-                                            }
-                                          : x,
-                                      ),
-                                    )
-                                  }
-                                />
-                              </div>
-                            </div>
-                          </td>
-                          <td
-                            className="p-1 align-middle"
-                            onClick={(e) => e.stopPropagation()}
-                            onKeyDown={(e) => e.stopPropagation()}
-                          >
-                            <Select
-                              value={homeMode}
-                              onValueChange={(v) =>
-                                setHomeMode(home.id, v as CommuteMode)
-                              }
+                            </td>
+                            <td className="p-1 align-middle">
+                              {formatIdr(r.totalMonthlyIdr)}
+                            </td>
+                            <td className="p-1 align-middle">
+                              {r.pctSalary.toFixed(1)}%
+                            </td>
+                            <td
+                              className="p-1 align-middle"
+                              onClick={(e) => e.stopPropagation()}
+                              onKeyDown={(e) => e.stopPropagation()}
                             >
-                              <SelectTrigger
-                                className="h-7 min-w-32 text-xs"
-                                aria-label={`${home.label} commute mode`}
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                type="button"
+                                onClick={() =>
+                                  setHomes((prev) =>
+                                    prev.filter((x) => x.id !== home.id),
+                                  )
+                                }
                               >
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {COMMUTE_MODES.map((m) => (
-                                  <SelectItem key={m} value={m}>
-                                    {COMMUTE_MODE_LABELS[m]}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </td>
-                          <td className="p-1 align-middle">
-                            {r.primary.p50Minutes} / {r.primary.p80Minutes} min
-                          </td>
-                          <td className="p-1 align-middle">
-                            {r.primary.monthlyHours}
-                          </td>
-                          <td className="p-1 align-middle">
-                            {formatIdr(r.primary.monthlyCostIdr)}
-                          </td>
-                          <td
-                            className="p-1 align-middle"
-                            onClick={(e) => e.stopPropagation()}
-                            onKeyDown={(e) => e.stopPropagation()}
-                          >
-                            <Input
-                              className="h-7 w-28 text-xs"
-                              type="number"
-                              value={home.rentIdr ?? ""}
-                              placeholder="optional"
-                              aria-label={`${home.label} rent per month`}
-                              onChange={(e) =>
-                                setHomes((prev) =>
-                                  prev.map((x) =>
-                                    x.id === home.id
-                                      ? {
-                                          ...x,
-                                          rentIdr: e.target.value
-                                            ? Number(e.target.value)
-                                            : undefined,
+                                Remove
+                              </Button>
+                            </td>
+                          </tr>
+                          {isExpanded && r.plans.length > 0 && (
+                            <tr className="bg-muted/40 border-b">
+                              <td colSpan={9} className="p-3">
+                                <div className="space-y-2">
+                                  <Label>
+                                    Recommendations for {home.label}
+                                  </Label>
+                                  <div className="flex flex-wrap gap-1">
+                                    {r.plans.map((p) => (
+                                      <Button
+                                        key={p.signature + p.label}
+                                        size="sm"
+                                        variant={
+                                          selectedPlan?.signature ===
+                                            p.signature &&
+                                          selectedPlan?.label === p.label
+                                            ? "default"
+                                            : "outline"
                                         }
-                                      : x,
-                                  ),
-                                )
-                              }
-                            />
-                          </td>
-                          <td className="p-1 align-middle">
-                            {formatIdr(r.totalMonthlyIdr)}
-                          </td>
-                          <td className="p-1 align-middle">
-                            {r.pctSalary.toFixed(1)}%
-                          </td>
-                          <td
-                            className="p-1 align-middle"
-                            onClick={(e) => e.stopPropagation()}
-                            onKeyDown={(e) => e.stopPropagation()}
-                          >
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              type="button"
-                              onClick={() =>
-                                setHomes((prev) =>
-                                  prev.filter((x) => x.id !== home.id),
-                                )
-                              }
-                            >
-                              Remove
-                            </Button>
-                          </td>
-                        </tr>
+                                        type="button"
+                                        onClick={() => setSelectedPlan(p)}
+                                      >
+                                        {p.label} · {p.oneWayMinutes}m ·{" "}
+                                        {formatIdr(p.oneWayCostIdr)}
+                                      </Button>
+                                    ))}
+                                  </div>
+                                  {selectedPlan &&
+                                    selectedHomeId === r.home.id && (
+                                      <ol className="text-muted-foreground list-decimal space-y-1 pl-4 text-xs">
+                                        {selectedPlan.legs.map((leg, li) => (
+                                          <li key={li}>
+                                            <span
+                                              className="mr-1 inline-block size-2 rounded-full"
+                                              style={{
+                                                background: TRANSIT_COLORS[
+                                                  leg.kind as TransitSystem
+                                                ]
+                                                  ? TRANSIT_COLORS[
+                                                      leg.kind as TransitSystem
+                                                    ]
+                                                  : leg.kind === "gojek"
+                                                    ? "#22c55e"
+                                                    : "#64748b",
+                                              }}
+                                            />
+                                            {leg.label} —{" "}
+                                            {Math.round(leg.minutes)} min,{" "}
+                                            {formatIdr(leg.costIdr)}
+                                          </li>
+                                        ))}
+                                      </ol>
+                                    )}
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </Fragment>
                       )
                     })}
                   </tbody>
                 </table>
-              </div>
-            )}
-
-            {activeResult && activeResult.plans.length > 0 && (
-              <div className="mt-3 space-y-2">
-                <Label>Plans for {activeResult.home.label}</Label>
-                <div className="flex flex-wrap gap-1">
-                  {activeResult.plans.map((p) => (
-                    <Button
-                      key={p.signature + p.label}
-                      size="sm"
-                      variant={
-                        selectedPlan?.signature === p.signature &&
-                        selectedPlan?.label === p.label
-                          ? "default"
-                          : "outline"
-                      }
-                      type="button"
-                      onClick={() => setSelectedPlan(p)}
-                    >
-                      {p.label} · {p.oneWayMinutes}m ·{" "}
-                      {formatIdr(p.oneWayCostIdr)}
-                    </Button>
-                  ))}
-                </div>
-                {selectedPlan && (
-                  <ol className="text-muted-foreground list-decimal space-y-1 pl-4 text-xs">
-                    {selectedPlan.legs.map((leg, i) => (
-                      <li key={i}>
-                        <span
-                          className="mr-1 inline-block size-2 rounded-full"
-                          style={{
-                            background: TRANSIT_COLORS[
-                              leg.kind as TransitSystem
-                            ]
-                              ? TRANSIT_COLORS[leg.kind as TransitSystem]
-                              : leg.kind === "gojek"
-                                ? "#22c55e"
-                                : "#64748b",
-                          }}
-                        />
-                        {leg.label} — {Math.round(leg.minutes)} min,{" "}
-                        {formatIdr(leg.costIdr)}
-                      </li>
-                    ))}
-                  </ol>
-                )}
               </div>
             )}
           </section>
