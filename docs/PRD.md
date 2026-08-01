@@ -13,7 +13,7 @@
 
 ## 1. Summary
 
-A free, map-first web tool for Jabodetabek job candidates with an offer in hand. Users pin an office and up to four candidate homes, compare commute modes (best-price mix, motorcycle, ojek, car, transit), and see monthly time and cost against salary — then export a one-page decision brief to share with a partner, parents, or HR.
+A free, map-first web tool for Jabodetabek job candidates with an offer in hand. Users pin an office and any number of candidate homes, compare commute modes (best-price mix, motorcycle, ojek, car, transit), and see monthly time and cost against salary — then export a one-page decision brief to share with a partner, parents, or HR.
 
 **One-liner:** Pin office + homes → stress-test commute × hybrid days × salary → export a negotiation-ready brief.
 
@@ -92,7 +92,7 @@ A user changes at least one of:
 ```text
 Open app
   → Place office (map click / lat-lng / preset)
-  → Place 1–4 homes (map click / move within 400 m / presets)
+  → Place homes (map click / move within 400 m / presets)
   → Set hybrid days, salary, optional rent, name/company labels
   → Per home, choose mode: best price mix | motorcycle | ojek | car | transit*
   → Review ranked results (P50/P80, monthly hours, cost, % salary)
@@ -111,7 +111,7 @@ Open app
 | ID  | Requirement                                                                                                     | Priority |
 | --- | --------------------------------------------------------------------------------------------------------------- | -------- |
 | F1  | Map centered on Jakarta with Carto light basemap                                                                | Must     |
-| F2  | Click-to-place office, then homes (max 4)                                                                       | Must     |
+| F2  | Click-to-place office, then homes (unlimited)                                                                   | Must     |
 | F3  | Click within 400 m of an existing home moves that home                                                          | Must     |
 | F4  | Manual lat/lng entry for office and homes                                                                       | Must     |
 | F5  | Preset chips for common offices (SCBD/Sudirman, Kuningan, BSD) and homes (Bekasi Barat, Depok, Tangerang, etc.) | Should   |
@@ -199,7 +199,7 @@ Validation gate: complete **15–20 interviews** per [VALIDATION.md](./VALIDATIO
 | Walk / transit unlock     | ≤ 1.2 km to stop |
 | Ojek feeder to stop       | ≤ 8 km           |
 | Move-home click threshold | 400 m            |
-| Max homes                 | 4                |
+| Max homes                 | unlimited        |
 
 ---
 
@@ -287,7 +287,7 @@ Do not start B2B sales before consumer usage and corridor accuracy are validated
 
 The MVP is acceptable when all of the following hold:
 
-1. User can place one office and up to four homes on the map (or via presets / lat-lng).
+1. User can place one office and any number of homes on the map (or via presets / lat-lng).
 2. For road modes, routes and time/cost summaries appear without a backend.
 3. Best-price mix returns up to three recommendations when multimodal options exist.
 4. Transit-only mode unlocks only when both pins are near known stops, with a step log.
@@ -314,7 +314,7 @@ Quick reference for product readers:
 | Walk / transit unlock | ≤ 1.2 km to stop      |
 | Ojek feeder           | ≤ 8 km                |
 | Interchange max walk  | 600 m                 |
-| Max homes             | 4                     |
+| Max homes             | unlimited             |
 
 ---
 

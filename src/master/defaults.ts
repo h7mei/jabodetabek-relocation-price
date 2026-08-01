@@ -39,7 +39,6 @@ export const DEFAULT_ZOOM = 11
 export const WALK_UNLOCK_M = 1_200
 export const OJEK_FEEDER_M = 8_000
 export const MOVE_HOME_M = 400
-export const MAX_HOMES = 4
 export const INTERCHANGE_M = 600
 export const VERTEX_MERGE_M = 120
 export const SNAP_MAX_M = 2_500

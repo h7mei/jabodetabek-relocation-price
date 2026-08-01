@@ -1,6 +1,6 @@
 # Jabodetabek Offer Stress-Test
 
-Client-only SPA: pin an office and up to four homes, compare commute modes (best-price mix, motorcycle, ojek, car, transit), and export a plain-text decision brief.
+Client-only SPA: pin an office and any number of homes, compare commute modes (best-price mix, motorcycle, ojek, car, transit), and export a plain-text decision brief.
 
 **Stack:** React 19 + Vite 8 · shadcn/ui (Radix) + Tailwind · mapcn (MapLibre) · public OSRM · static transit GeoJSON under `public/data/transit/`.
 

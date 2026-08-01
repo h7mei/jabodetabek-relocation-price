@@ -68,7 +68,7 @@ Use this when recreating the app. Prefer behavior-faithful planner + honest cave
 
 ### Step 6 — Map UX
 
-- [x] mapcn MapLibre + CARTO Positron (`theme="light"`); click-to-place office then homes (max 4)
+- [x] mapcn MapLibre + CARTO Positron (`theme="light"`); click-to-place office then homes (unlimited)
 - [x] Move home if click within 400 m
 - [x] Presets, mode picker, salary/hybrid/rent, PT layer toggles (`MapGeoJSON` / `useMap`)
 - [x] `MapRoute` polylines + results table + itinerary log

@@ -1,11 +1,11 @@
 # RFC-001 — Client-side commute planner
 
-| Field | Value |
-| --- | --- |
-| **Status** | Accepted (MVP) |
-| **Product** | Jabodetabek Offer Stress-Test |
-| **Last updated** | 2026-08-01 |
-| **Related** | [PRD.md](./PRD.md), [TDD.md](./TDD.md), [public/data/README.md](../public/data/README.md) |
+| Field            | Value                                                                                     |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| **Status**       | Accepted (MVP)                                                                            |
+| **Product**      | Jabodetabek Offer Stress-Test                                                             |
+| **Last updated** | 2026-08-01                                                                                |
+| **Related**      | [PRD.md](./PRD.md), [TDD.md](./TDD.md), [public/data/README.md](../public/data/README.md) |
 
 **Truth rule:** when code and this RFC disagree, update this RFC in the same change as the planner. Product acceptance stays in the PRD; math and routing contracts live here.
 
@@ -33,27 +33,27 @@ Build a **client-only** heuristic multimodal planner over static transit GeoJSON
 
 ## 2. Normative constants
 
-| Constant | Value |
-| --- | --- |
-| Default salary | Rp 12,000,000 / month |
-| Default hybrid (WFO) days | 3 |
-| Peak road factor | 1.45 |
-| P80 factor (road / mix summaries) | 1.4 × P50 |
-| Weeks / month | 4.33 |
-| Interchange max walk | 600 m |
-| Home board candidates (per system) | top 3 nearest |
-| Office alight candidates | top 5 nearest |
-| Near-cheapest price band | cheapest + Rp 5,000 → pick fastest |
-| Enumeration shortlist before OSRM | 28 plans |
-| Walk speed | 80 m/min |
-| Transit ride speed (along network) | 350 m/min |
-| Ojek speed proxy | 22 km/h |
-| Walk / transit unlock radius | ≤ 1.2 km to stop |
-| Ojek feeder to stop | ≤ 8 km |
-| Move-home click threshold | 400 m |
-| Max homes | 4 |
-| Network vertex merge | 120 m |
-| Snap endpoints to graph | max 2.5 km |
+| Constant                           | Value                              |
+| ---------------------------------- | ---------------------------------- |
+| Default salary                     | Rp 12,000,000 / month              |
+| Default hybrid (WFO) days          | 3                                  |
+| Peak road factor                   | 1.45                               |
+| P80 factor (road / mix summaries)  | 1.4 × P50                          |
+| Weeks / month                      | 4.33                               |
+| Interchange max walk               | 600 m                              |
+| Home board candidates (per system) | top 3 nearest                      |
+| Office alight candidates           | top 5 nearest                      |
+| Near-cheapest price band           | cheapest + Rp 5,000 → pick fastest |
+| Enumeration shortlist before OSRM  | 28 plans                           |
+| Walk speed                         | 80 m/min                           |
+| Transit ride speed (along network) | 350 m/min                          |
+| Ojek speed proxy                   | 22 km/h                            |
+| Walk / transit unlock radius       | ≤ 1.2 km to stop                   |
+| Ojek feeder to stop                | ≤ 8 km                             |
+| Move-home click threshold          | 400 m                              |
+| Max homes                          | unlimited                          |
+| Network vertex merge               | 120 m                              |
+| Snap endpoints to graph            | max 2.5 km                         |
 
 Peak road factor (**×1.45**) applies to Gojek / motorcycle / car / TransJakarta. It does **not** apply to KRL / MRT / LRT / walk.
 
@@ -67,11 +67,11 @@ oneWayCost × 2 × WFO_days × 4.33
 
 ## 3. Modes
 
-| Mode | Pipeline |
-| --- | --- |
-| Motorcycle / ojek / car | Single OSRM driving route × peak 1.45; P80 ≈ P50 × 1.4 |
-| Transit only | Walk-access planner (no ojek feeders); unlock when both pins within ~1.2 km of known stops |
-| Best price mix (`cheapest`) | Multimodal enumeration → shortlist → OSRM enrich Gojek legs → up to 3 recs |
+| Mode                        | Pipeline                                                                                   |
+| --------------------------- | ------------------------------------------------------------------------------------------ |
+| Motorcycle / ojek / car     | Single OSRM driving route × peak 1.45; P80 ≈ P50 × 1.4                                     |
+| Transit only                | Walk-access planner (no ojek feeders); unlock when both pins within ~1.2 km of known stops |
+| Best price mix (`cheapest`) | Multimodal enumeration → shortlist → OSRM enrich Gojek legs → up to 3 recs                 |
 
 ---
 
@@ -93,11 +93,11 @@ oneWayCost × 2 × WFO_days × 4.33
 
 ### 4.2 Access and egress
 
-| Mode | When allowed | Time | Cost |
-| --- | --- | --- | --- |
-| **Walk** | Pin ≤ **1.2 km** from stop | `max(3, meters / 80 m·min⁻¹)` | Rp 0 |
-| **Gojek (ojek)** | Pin ≤ **8 km** from stop (or door-to-door) | haversine→22 km/h, then ×1.45; after OSRM: road duration ×1.45 | `base + km × perKm` |
-| **Transit ride** | Along curated network polyline | `max(5, path_m / 350 m·min⁻¹)`; TJ also ×1.45 | `base + min(km, cap) × perKm` |
+| Mode             | When allowed                               | Time                                                           | Cost                          |
+| ---------------- | ------------------------------------------ | -------------------------------------------------------------- | ----------------------------- |
+| **Walk**         | Pin ≤ **1.2 km** from stop                 | `max(3, meters / 80 m·min⁻¹)`                                  | Rp 0                          |
+| **Gojek (ojek)** | Pin ≤ **8 km** from stop (or door-to-door) | haversine→22 km/h, then ×1.45; after OSRM: road duration ×1.45 | `base + km × perKm`           |
+| **Transit ride** | Along curated network polyline             | `max(5, path_m / 350 m·min⁻¹)`; TJ also ×1.45                  | `base + min(km, cap) × perKm` |
 
 ### 4.3 Stop selection
 
@@ -148,10 +148,10 @@ For a ride on one system between two stops:
 
 ### 4.8 Ranking
 
-| Kind | Rule |
-| --- | --- |
-| **Best price** | Among plans within **Rp 5,000** of cheapest one-way, pick **fastest** |
-| **Best time** | Lowest one-way minutes; ties by cost; distinct signature if possible |
+| Kind             | Rule                                                                      |
+| ---------------- | ------------------------------------------------------------------------- |
+| **Best price**   | Among plans within **Rp 5,000** of cheapest one-way, pick **fastest**     |
+| **Best time**    | Lowest one-way minutes; ties by cost; distinct signature if possible      |
 | **Best balance** | Minimize `cost/maxCost + minutes/maxMins`; distinct signature if possible |
 
 ### 4.9 OSRM enrichment
@@ -169,13 +169,13 @@ Endpoint: `https://router.project-osrm.org/route/v1/driving/...`
 
 Office ≈ `(-6.2275, 106.8085)`, 3 WFO days, Best price mix.
 
-| Step | Behavior |
-| --- | --- |
-| Board | St. Bogor (walk or short Gojek) |
-| Alight candidates | Several CBD KRL stops (Mampang, Sudirman, …) — not nearest-only |
-| Cross-system | **Skipped** — KRL already within 8 km of office |
-| Typical Best price | KRL → nearby CBD stop → Gojek last mile |
-| Rejected | KRL → fake hub → MRT → walk |
+| Step               | Behavior                                                        |
+| ------------------ | --------------------------------------------------------------- |
+| Board              | St. Bogor (walk or short Gojek)                                 |
+| Alight candidates  | Several CBD KRL stops (Mampang, Sudirman, …) — not nearest-only |
+| Cross-system       | **Skipped** — KRL already within 8 km of office                 |
+| Typical Best price | KRL → nearby CBD stop → Gojek last mile                         |
+| Rejected           | KRL → fake hub → MRT → walk                                     |
 
 ---
 
@@ -196,30 +196,30 @@ Approx scale (MVP): KRL ~68 stops / 5 lines; MRT ~13 / 1; LRT ~18 / 2; TransJaka
 
 ## 7. Code map
 
-| Concern | Module |
-| --- | --- |
-| Enumerate / rank / enrich | `src/lib/multimodalPlanner.ts` |
-| Nearest stops, interchange | `src/lib/transitPlanner.ts` |
-| Network Dijkstra + caches | `src/lib/transitNetwork.ts` |
-| OSRM + haversine | `src/lib/routing.ts` |
-| Peak factor | `src/lib/traffic.ts` |
-| Monthly math | `src/lib/commute.ts` |
-| Decision brief export | `src/lib/report.ts` |
-| Orchestration (UI) | `src/pages/MapPage.tsx` |
-| Pricing constants | `src/master/defaults.ts` |
-| Master data store | `src/master/store.ts` |
+| Concern                    | Module                         |
+| -------------------------- | ------------------------------ |
+| Enumerate / rank / enrich  | `src/lib/multimodalPlanner.ts` |
+| Nearest stops, interchange | `src/lib/transitPlanner.ts`    |
+| Network Dijkstra + caches  | `src/lib/transitNetwork.ts`    |
+| OSRM + haversine           | `src/lib/routing.ts`           |
+| Peak factor                | `src/lib/traffic.ts`           |
+| Monthly math               | `src/lib/commute.ts`           |
+| Decision brief export      | `src/lib/report.ts`            |
+| Orchestration (UI)         | `src/pages/MapPage.tsx`        |
+| Pricing constants          | `src/master/defaults.ts`       |
+| Master data store          | `src/master/store.ts`          |
 
 ---
 
 ## 8. Explicit non-goals
 
-| Not in MVP planner |
-| --- |
-| Live GTFS schedules / headways |
-| Live Grab/Gojek quotes |
-| Full citywide multimodal graph competitive with Google Maps |
+| Not in MVP planner                                                             |
+| ------------------------------------------------------------------------------ |
+| Live GTFS schedules / headways                                                 |
+| Live Grab/Gojek quotes                                                         |
+| Full citywide multimodal graph competitive with Google Maps                    |
 | Optimizing for transfers when same-line + last mile already reaches the office |
-| Backend routing service or API keys |
+| Backend routing service or API keys                                            |
 
 ---
 

@@ -22,7 +22,6 @@ import { loadTransitCatalog } from "@/lib/transitCatalog"
 import {
   DEFAULT_SALARY,
   DEFAULT_WFO_DAYS,
-  MAX_HOMES,
   MOVE_HOME_M,
 } from "@/master/defaults"
 import { loadMaster } from "@/master/store"
@@ -214,7 +213,6 @@ export function MapPage() {
       )
       return
     }
-    if (homes.length >= MAX_HOMES) return
     const n = homes.length + 1
     const id = uid("home")
     pendingSelectHomeIdRef.current = id
@@ -246,7 +244,6 @@ export function MapPage() {
   }
 
   const addHomePreset = (id: string) => {
-    if (homes.length >= MAX_HOMES) return
     const p = master.homes.find((h) => h.id === id)
     if (!p) return
     const homeId = uid("home")
@@ -310,7 +307,7 @@ export function MapPage() {
             <p className="text-muted-foreground text-xs">
               {step === "office" && "Click map to place office"}
               {step === "homes" &&
-                `Click to place homes (max ${MAX_HOMES}). Click near a home to move it.`}
+                "Click to place homes. Click near a home to move it."}
               {step === "done" &&
                 `${homes.length} home(s). Routes update automatically.`}
             </p>
@@ -319,7 +316,7 @@ export function MapPage() {
                 Office
               </Badge>
               <Badge variant={step !== "office" ? "default" : "secondary"}>
-                Homes {homes.length}/{MAX_HOMES}
+                Homes {homes.length}
               </Badge>
             </div>
           </div>
@@ -350,7 +347,6 @@ export function MapPage() {
                   size="sm"
                   variant="outline"
                   type="button"
-                  disabled={homes.length >= MAX_HOMES}
                   onClick={() => addHomePreset(h.id)}
                 >
                   {h.label}
@@ -452,7 +448,7 @@ export function MapPage() {
               <div className="bg-background/90 rounded-md border px-2 py-1 text-xs shadow-sm">
                 {step === "office"
                   ? "Step: place office"
-                  : `Step: place homes (${homes.length}/${MAX_HOMES})`}
+                  : `Step: place homes (${homes.length})`}
               </div>
               <div className="bg-background/90 space-y-1.5 rounded-md border px-2 py-1.5 text-xs shadow-sm">
                 <p className="text-muted-foreground font-medium">PT layers</p>
