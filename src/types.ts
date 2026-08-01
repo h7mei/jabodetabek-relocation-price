@@ -17,6 +17,22 @@ export const TRANSIT_COLORS: Record<TransitSystem, string> = {
 
 export type CommuteMode = "cheapest" | "motorcycle" | "ojek" | "car" | "transit"
 
+export const COMMUTE_MODE_LABELS: Record<CommuteMode, string> = {
+  cheapest: "Best price mix",
+  motorcycle: "Motorcycle",
+  ojek: "Ojek",
+  car: "Car",
+  transit: "Transit only",
+}
+
+export const COMMUTE_MODES: CommuteMode[] = [
+  "cheapest",
+  "motorcycle",
+  "ojek",
+  "car",
+  "transit",
+]
+
 export type LatLng = { lat: number; lng: number }
 
 export type PinKind = "office" | "home"
@@ -27,6 +43,8 @@ export type Pin = LatLng & {
   kind: PinKind
   /** Optional monthly rent IDR (homes) */
   rentIdr?: number
+  /** Per-home commute mode (homes only; default cheapest) */
+  mode?: CommuteMode
 }
 
 export type PresetPlace = LatLng & {
@@ -88,6 +106,7 @@ export type CommutePlan = {
 
 export type RankedHomeResult = {
   home: Pin
+  mode: CommuteMode
   plans: CommutePlan[]
   /** Primary plan used for ranking row (best for mode) */
   primary: CommutePlan
@@ -98,7 +117,6 @@ export type RankedHomeResult = {
 
 export type ScenarioResult = {
   office: Pin
-  mode: CommuteMode
   wfoDays: number
   salaryIdr: number
   ranked: RankedHomeResult[]

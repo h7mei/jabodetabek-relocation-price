@@ -1,19 +1,10 @@
 import { formatIdr } from "@/lib/commute"
-import type { CommuteMode, Pin, RankedHomeResult } from "@/types"
-
-const MODE_LABEL: Record<CommuteMode, string> = {
-  cheapest: "Best price mix",
-  motorcycle: "Motorcycle",
-  ojek: "Ojek",
-  car: "Car",
-  transit: "Transit only",
-}
+import { COMMUTE_MODE_LABELS, type Pin, type RankedHomeResult } from "@/types"
 
 export function buildDecisionBrief(opts: {
   candidateName?: string
   company?: string
   office: Pin
-  mode: CommuteMode
   wfoDays: number
   salaryIdr: number
   ranked: RankedHomeResult[]
@@ -27,7 +18,6 @@ export function buildDecisionBrief(opts: {
   lines.push(
     `Office: ${opts.office.label} (${opts.office.lat.toFixed(5)}, ${opts.office.lng.toFixed(5)})`
   )
-  lines.push(`Mode: ${MODE_LABEL[opts.mode]}`)
   lines.push(`WFO days / week: ${opts.wfoDays}`)
   lines.push(`Salary (monthly): ${formatIdr(opts.salaryIdr)}`)
   lines.push("")
@@ -38,6 +28,7 @@ export function buildDecisionBrief(opts: {
     const p = r.primary
     lines.push("")
     lines.push(`${i + 1}. ${r.home.label}`)
+    lines.push(`   Mode: ${COMMUTE_MODE_LABELS[r.mode]}`)
     lines.push(`   P50 one-way: ${p.p50Minutes} min | P80: ${p.p80Minutes} min`)
     lines.push(
       `   Transport: ${formatIdr(p.monthlyCostIdr)}/mo (${p.monthlyHours} h) | day RT ${formatIdr(p.dailyRtCostIdr)}`

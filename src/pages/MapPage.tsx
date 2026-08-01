@@ -27,6 +27,8 @@ import {
 } from "@/master/defaults"
 import { loadMaster } from "@/master/store"
 import {
+  COMMUTE_MODE_LABELS,
+  COMMUTE_MODES,
   TRANSIT_COLORS,
   TRANSIT_SYSTEMS,
   type CommuteMode,
@@ -51,7 +53,6 @@ export function MapPage() {
   const [office, setOffice] = useState<Pin | null>(null)
   const [homes, setHomes] = useState<Pin[]>([])
   const [step, setStep] = useState<PlacementStep>("office")
-  const [mode, setMode] = useState<CommuteMode>("cheapest")
   const [salary, setSalary] = useState(DEFAULT_SALARY)
   const [wfoDays, setWfoDays] = useState(DEFAULT_WFO_DAYS)
   const [name, setName] = useState("")
@@ -71,6 +72,7 @@ export function MapPage() {
   const compareGen = useRef(0)
   const selectedHomeIdRef = useRef<string | null>(null)
   selectedHomeIdRef.current = selectedHomeId
+  const pendingSelectHomeIdRef = useRef<string | null>(null)
   const resultsRef = useRef<HTMLElement>(null)
   const lastFocusedHomesKey = useRef("")
 
@@ -94,7 +96,7 @@ export function MapPage() {
     el.focus({ preventScroll: true })
   }, [computing, ranked, homes])
 
-  // Auto-compute whenever office + homes (and mode/inputs) change
+  // Auto-compute whenever office + homes (and inputs) change
   useEffect(() => {
     if (!office || homes.length === 0 || transit.length === 0) {
       setRanked([])
@@ -102,6 +104,7 @@ export function MapPage() {
       setSelectedHomeId(null)
       setComputing(false)
       lastFocusedHomesKey.current = ""
+      pendingSelectHomeIdRef.current = null
       return
     }
 
@@ -113,6 +116,7 @@ export function MapPage() {
         try {
           const results: RankedHomeResult[] = []
           for (const home of homes) {
+            const mode: CommuteMode = home.mode ?? "cheapest"
             const plans = await planForMode(
               home,
               office,
@@ -125,6 +129,7 @@ export function MapPage() {
             if (!plans.length) {
               results.push({
                 home,
+                mode,
                 plans: [],
                 primary: {
                   signature: "none",
@@ -149,6 +154,7 @@ export function MapPage() {
             const totalMonthlyIdr = primary.monthlyCostIdr + rentIdr
             results.push({
               home,
+              mode,
               plans,
               primary,
               rentIdr,
@@ -158,9 +164,16 @@ export function MapPage() {
           }
           if (gen !== compareGen.current) return
           results.sort((a, b) => a.totalMonthlyIdr - b.totalMonthlyIdr)
+          const preferId = pendingSelectHomeIdRef.current
+          pendingSelectHomeIdRef.current = null
           const prevId = selectedHomeIdRef.current
           const row =
-            results.find((r) => r.home.id === prevId) ?? results[0] ?? null
+            (preferId
+              ? results.find((r) => r.home.id === preferId)
+              : null) ??
+            results.find((r) => r.home.id === prevId) ??
+            results[0] ??
+            null
           setRanked(results)
           setSelectedHomeId(row?.home.id ?? null)
           setSelectedPlan(row?.primary ?? null)
@@ -177,7 +190,7 @@ export function MapPage() {
       window.clearTimeout(timer)
       compareGen.current += 1
     }
-  }, [office, homes, mode, wfoDays, salary, transit, master.pricing])
+  }, [office, homes, wfoDays, salary, transit, master.pricing])
 
   const handleMapClick = (lng: number, lat: number) => {
     if (step === "office" || !office) {
@@ -203,14 +216,17 @@ export function MapPage() {
     }
     if (homes.length >= MAX_HOMES) return
     const n = homes.length + 1
+    const id = uid("home")
+    pendingSelectHomeIdRef.current = id
     setHomes((prev) => [
       ...prev,
       {
-        id: uid("home"),
+        id,
         kind: "home",
         label: `Home ${n}`,
         lat,
         lng,
+        mode: "cheapest",
       },
     ])
     if (homes.length + 1 >= 1) setStep("done")
@@ -233,17 +249,27 @@ export function MapPage() {
     if (homes.length >= MAX_HOMES) return
     const p = master.homes.find((h) => h.id === id)
     if (!p) return
+    const homeId = uid("home")
+    pendingSelectHomeIdRef.current = homeId
     setHomes((prev) => [
       ...prev,
       {
-        id: uid("home"),
+        id: homeId,
         kind: "home",
         label: p.label,
         lat: p.lat,
         lng: p.lng,
+        mode: "cheapest",
       },
     ])
     setStep("done")
+  }
+
+  const setHomeMode = (homeId: string, next: CommuteMode) => {
+    pendingSelectHomeIdRef.current = homeId
+    setHomes((prev) =>
+      prev.map((h) => (h.id === homeId ? { ...h, mode: next } : h)),
+    )
   }
 
   const exportBrief = () => {
@@ -252,7 +278,6 @@ export function MapPage() {
       candidateName: name || undefined,
       company: company || undefined,
       office,
-      mode,
       wfoDays,
       salaryIdr: salary,
       ranked,
@@ -360,25 +385,6 @@ export function MapPage() {
           )}
 
           <Separator />
-
-          <div className="space-y-1">
-            <Label>Mode</Label>
-            <Select
-              value={mode}
-              onValueChange={(v) => setMode(v as CommuteMode)}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="cheapest">Best price mix</SelectItem>
-                <SelectItem value="motorcycle">Motorcycle</SelectItem>
-                <SelectItem value="ojek">Ojek</SelectItem>
-                <SelectItem value="car">Car</SelectItem>
-                <SelectItem value="transit">Transit only</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
@@ -503,6 +509,7 @@ export function MapPage() {
                   <thead>
                     <tr className="border-b">
                       <th className="p-1">Home</th>
+                      <th className="p-1">Mode</th>
                       <th className="p-1">P50 / P80</th>
                       <th className="p-1">Mo. hours</th>
                       <th className="p-1">Transport</th>
@@ -515,6 +522,7 @@ export function MapPage() {
                   <tbody>
                     {ranked.map((r, i) => {
                       const home = homes.find((h) => h.id === r.home.id) ?? r.home
+                      const homeMode = home.mode ?? "cheapest"
                       return (
                         <tr
                           key={r.home.id}
@@ -591,6 +599,32 @@ export function MapPage() {
                                 />
                               </div>
                             </div>
+                          </td>
+                          <td
+                            className="p-1 align-middle"
+                            onClick={(e) => e.stopPropagation()}
+                            onKeyDown={(e) => e.stopPropagation()}
+                          >
+                            <Select
+                              value={homeMode}
+                              onValueChange={(v) =>
+                                setHomeMode(home.id, v as CommuteMode)
+                              }
+                            >
+                              <SelectTrigger
+                                className="h-7 min-w-32 text-xs"
+                                aria-label={`${home.label} commute mode`}
+                              >
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {COMMUTE_MODES.map((m) => (
+                                  <SelectItem key={m} value={m}>
+                                    {COMMUTE_MODE_LABELS[m]}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </td>
                           <td className="p-1 align-middle">
                             {r.primary.p50Minutes} / {r.primary.p80Minutes} min

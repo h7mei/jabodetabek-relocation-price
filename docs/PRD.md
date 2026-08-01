@@ -94,7 +94,7 @@ Open app
   → Place office (map click / lat-lng / preset)
   → Place 1–4 homes (map click / move within 400 m / presets)
   → Set hybrid days, salary, optional rent, name/company labels
-  → Choose mode: best price mix | motorcycle | ojek | car | transit*
+  → Per home, choose mode: best price mix | motorcycle | ojek | car | transit*
   → Review ranked results (P50/P80, monthly hours, cost, % salary)
   → Inspect path detail (leg-by-leg itinerary)
   → Export decision brief (`.txt` download)
@@ -207,12 +207,12 @@ Validation gate: complete **15–20 interviews** per [VALIDATION.md](./VALIDATIO
 
 ### Layout (single page)
 
-| Region       | Role                                                                                        |
-| ------------ | ------------------------------------------------------------------------------------------- |
-| Left sidebar | Scenario panel: pin step, office editor, presets, mode, salary, hybrid days, brief metadata |
-| Main map     | Pins, routes, optional PT overlays, click-to-place                                          |
-| Map chrome   | Legend, placement step, PT layer toggles                                                    |
-| Below map    | Results board with per-home editors (label, lat/lng, rent, remove), path detail, export     |
+| Region       | Role                                                                                          |
+| ------------ | --------------------------------------------------------------------------------------------- |
+| Left sidebar | Scenario panel: pin step, office editor, presets, salary, hybrid days, brief metadata         |
+| Main map     | Pins, routes, optional PT overlays, click-to-place                                            |
+| Map chrome   | Legend, placement step, PT layer toggles                                                      |
+| Below map    | Results board with per-home editors (label, lat/lng, mode, rent, remove), path detail, export |
 
 ### UX principles
 
