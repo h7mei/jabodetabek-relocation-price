@@ -20,7 +20,7 @@ Build a **client-only** heuristic multimodal planner over static transit GeoJSON
 **Why**
 
 - MVP must ship with zero env vars, auth, or secrets
-- Offer-stage users need monthly bands vs salary, not door-to-door navigation
+- Offer-stage users need monthly time/cost bands, not door-to-door navigation
 - Jabodetabek corridor coverage can start from curated stops/networks
 
 **Consequences**
@@ -35,7 +35,6 @@ Build a **client-only** heuristic multimodal planner over static transit GeoJSON
 
 | Constant                           | Value                              |
 | ---------------------------------- | ---------------------------------- |
-| Default salary                     | Rp 12,000,000 / month              |
 | Default hybrid (WFO) days          | 3                                  |
 | Peak road factor                   | 1.45                               |
 | P80 factor (road / mix summaries)  | 1.4 × P50                          |
@@ -90,6 +89,8 @@ oneWayCost × 2 × WFO_days × 4.33
 **Inputs (per home × office):** home pin, office pin, WFO days (1–5), enabled PT systems, static stops + network, pricing constants.
 
 **Outputs:** up to 3 recommendations (best **price**, **time**, **balance**), each with ordered legs, one-way minutes & IDR, daily RT cost, monthly cost.
+
+**Home ranking (UI):** homes are ordered by primary plan **monthly transport cost** ascending. No salary % or rent in the ranking.
 
 ### 4.2 Access and egress
 

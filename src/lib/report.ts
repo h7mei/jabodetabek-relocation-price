@@ -6,7 +6,6 @@ export function buildDecisionBrief(opts: {
   company?: string
   office: Pin
   wfoDays: number
-  salaryIdr: number
   ranked: RankedHomeResult[]
 }): string {
   const lines: string[] = []
@@ -19,9 +18,8 @@ export function buildDecisionBrief(opts: {
     `Office: ${opts.office.label} (${opts.office.lat.toFixed(5)}, ${opts.office.lng.toFixed(5)})`
   )
   lines.push(`WFO days / week: ${opts.wfoDays}`)
-  lines.push(`Salary (monthly): ${formatIdr(opts.salaryIdr)}`)
   lines.push("")
-  lines.push("Ranked homes")
+  lines.push("Ranked homes (by monthly transport cost)")
   lines.push("-".repeat(48))
 
   opts.ranked.forEach((r, i) => {
@@ -32,12 +30,6 @@ export function buildDecisionBrief(opts: {
     lines.push(`   P50 one-way: ${p.p50Minutes} min | P80: ${p.p80Minutes} min`)
     lines.push(
       `   Transport: ${formatIdr(p.monthlyCostIdr)}/mo (${p.monthlyHours} h) | day RT ${formatIdr(p.dailyRtCostIdr)}`
-    )
-    if (r.rentIdr > 0) {
-      lines.push(`   Rent: ${formatIdr(r.rentIdr)}/mo`)
-    }
-    lines.push(
-      `   Total (transport${r.rentIdr ? "+rent" : ""}): ${formatIdr(r.totalMonthlyIdr)} (~${r.pctSalary.toFixed(1)}% of salary)`
     )
     lines.push(`   Plan: ${p.label}`)
     for (const leg of p.legs) {

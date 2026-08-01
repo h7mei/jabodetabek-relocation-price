@@ -19,11 +19,6 @@ export function monthlyFromOneWay(
   return { monthlyCostIdr, monthlyHours, dailyRtCostIdr }
 }
 
-export function pctOfSalary(monthlyIdr: number, salaryIdr: number): number {
-  if (salaryIdr <= 0) return 0
-  return (monthlyIdr / salaryIdr) * 100
-}
-
 export function formatIdr(n: number): string {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",

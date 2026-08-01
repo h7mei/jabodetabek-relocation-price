@@ -41,8 +41,6 @@ export type Pin = LatLng & {
   id: string
   label: string
   kind: PinKind
-  /** Optional monthly rent IDR (homes) */
-  rentIdr?: number
   /** Per-home commute mode (homes only; default cheapest) */
   mode?: CommuteMode
 }
@@ -110,15 +108,11 @@ export type RankedHomeResult = {
   plans: CommutePlan[]
   /** Primary plan used for ranking row (best for mode) */
   primary: CommutePlan
-  rentIdr: number
-  totalMonthlyIdr: number
-  pctSalary: number
 }
 
 export type ScenarioResult = {
   office: Pin
   wfoDays: number
-  salaryIdr: number
   ranked: RankedHomeResult[]
 }
 

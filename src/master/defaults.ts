@@ -87,5 +87,4 @@ export const TRANSIT_M_PER_MIN = 350
 export const OJEK_KMH = 22
 export const SHORTLIST_CAP = 28
 export const PRICE_BAND_IDR = 5_000
-export const DEFAULT_SALARY = 12_000_000
 export const DEFAULT_WFO_DAYS = 3

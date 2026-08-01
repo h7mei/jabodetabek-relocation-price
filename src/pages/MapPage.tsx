@@ -22,16 +22,12 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { formatIdr, pctOfSalary } from "@/lib/commute"
+import { formatIdr } from "@/lib/commute"
 import { planForMode } from "@/lib/multimodalPlanner"
 import { buildDecisionBrief, downloadText } from "@/lib/report"
 import { haversineMeters } from "@/lib/routing"
 import { loadTransitCatalog } from "@/lib/transitCatalog"
-import {
-  DEFAULT_SALARY,
-  DEFAULT_WFO_DAYS,
-  MOVE_HOME_M,
-} from "@/master/defaults"
+import { DEFAULT_WFO_DAYS, MOVE_HOME_M } from "@/master/defaults"
 import { loadMaster } from "@/master/store"
 import {
   COMMUTE_MODE_LABELS,
@@ -60,7 +56,6 @@ export function MapPage() {
   const [office, setOffice] = useState<Pin | null>(null)
   const [homes, setHomes] = useState<Pin[]>([])
   const [step, setStep] = useState<PlacementStep>("office")
-  const [salary, setSalary] = useState(DEFAULT_SALARY)
   const [wfoDays, setWfoDays] = useState(DEFAULT_WFO_DAYS)
   const [name, setName] = useState("")
   const [company, setCompany] = useState("")
@@ -161,27 +156,20 @@ export function MapPage() {
                   p50Minutes: 0,
                   p80Minutes: 0,
                 },
-                rentIdr: home.rentIdr ?? 0,
-                totalMonthlyIdr: home.rentIdr ?? 0,
-                pctSalary: pctOfSalary(home.rentIdr ?? 0, salary),
               })
               continue
             }
-            const primary = plans[0]
-            const rentIdr = home.rentIdr ?? 0
-            const totalMonthlyIdr = primary.monthlyCostIdr + rentIdr
             results.push({
               home,
               mode,
               plans,
-              primary,
-              rentIdr,
-              totalMonthlyIdr,
-              pctSalary: pctOfSalary(totalMonthlyIdr, salary),
+              primary: plans[0],
             })
           }
           if (gen !== compareGen.current) return
-          results.sort((a, b) => a.totalMonthlyIdr - b.totalMonthlyIdr)
+          results.sort(
+            (a, b) => a.primary.monthlyCostIdr - b.primary.monthlyCostIdr,
+          )
           const preferId = pendingSelectHomeIdRef.current
           pendingSelectHomeIdRef.current = null
           const prevId = selectedHomeIdRef.current
@@ -208,7 +196,7 @@ export function MapPage() {
       window.clearTimeout(timer)
       compareGen.current += 1
     }
-  }, [office, homes, wfoDays, salary, transit, master.pricing])
+  }, [office, homes, wfoDays, transit, master.pricing])
 
   const handleMapClick = (lng: number, lat: number) => {
     if (step === "office" || !office) {
@@ -295,7 +283,6 @@ export function MapPage() {
     setOffice(null)
     setHomes([])
     setStep("office")
-    setSalary(DEFAULT_SALARY)
     setWfoDays(DEFAULT_WFO_DAYS)
     setName("")
     setCompany("")
@@ -319,7 +306,6 @@ export function MapPage() {
       company: company || undefined,
       office,
       wfoDays,
-      salaryIdr: salary,
       ranked,
     })
     downloadText("decision-brief.txt", text)
@@ -444,25 +430,15 @@ export function MapPage() {
 
           <Separator />
 
-          <div className="grid grid-cols-2 gap-2">
-            <div className="space-y-1">
-              <Label>WFO days</Label>
-              <Input
-                type="number"
-                min={1}
-                max={5}
-                value={wfoDays}
-                onChange={(e) => setWfoDays(Number(e.target.value) || 1)}
-              />
-            </div>
-            <div className="space-y-1">
-              <Label>Salary (IDR)</Label>
-              <Input
-                type="number"
-                value={salary}
-                onChange={(e) => setSalary(Number(e.target.value) || 0)}
-              />
-            </div>
+          <div className="space-y-1">
+            <Label>WFO days</Label>
+            <Input
+              type="number"
+              min={1}
+              max={5}
+              value={wfoDays}
+              onChange={(e) => setWfoDays(Number(e.target.value) || 1)}
+            />
           </div>
 
           <div className="space-y-1">
@@ -570,10 +546,7 @@ export function MapPage() {
                       <th className="p-1">Mode</th>
                       <th className="p-1">P50 / P80</th>
                       <th className="p-1">Mo. hours</th>
-                      <th className="p-1">Transport</th>
-                      <th className="p-1">Rent / mo</th>
-                      <th className="p-1">Total</th>
-                      <th className="p-1">% salary</th>
+                      <th className="p-1">Transport / mo</th>
                       <th className="p-1" />
                     </tr>
                   </thead>
@@ -715,39 +688,6 @@ export function MapPage() {
                               onClick={(e) => e.stopPropagation()}
                               onKeyDown={(e) => e.stopPropagation()}
                             >
-                              <Input
-                                className="h-7 w-28 text-xs"
-                                type="number"
-                                value={home.rentIdr ?? ""}
-                                placeholder="optional"
-                                aria-label={`${home.label} rent per month`}
-                                onChange={(e) =>
-                                  setHomes((prev) =>
-                                    prev.map((x) =>
-                                      x.id === home.id
-                                        ? {
-                                            ...x,
-                                            rentIdr: e.target.value
-                                              ? Number(e.target.value)
-                                              : undefined,
-                                          }
-                                        : x,
-                                    ),
-                                  )
-                                }
-                              />
-                            </td>
-                            <td className="p-1 align-middle">
-                              {formatIdr(r.totalMonthlyIdr)}
-                            </td>
-                            <td className="p-1 align-middle">
-                              {r.pctSalary.toFixed(1)}%
-                            </td>
-                            <td
-                              className="p-1 align-middle"
-                              onClick={(e) => e.stopPropagation()}
-                              onKeyDown={(e) => e.stopPropagation()}
-                            >
                               <Button
                                 size="sm"
                                 variant="ghost"
@@ -764,7 +704,7 @@ export function MapPage() {
                           </tr>
                           {isExpanded && r.plans.length > 0 && (
                             <tr className="bg-muted/40 border-b">
-                              <td colSpan={9} className="p-3">
+                              <td colSpan={6} className="p-3">
                                 <div className="space-y-2">
                                   <Label>
                                     Recommendations for {home.label}
