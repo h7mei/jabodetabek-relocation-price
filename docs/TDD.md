@@ -31,7 +31,7 @@ Refactor → clean up; keep tests green
 | `src/lib/commute.ts`           | Monthly hours/cost / % salary formula                         |
 | `src/lib/traffic.ts`           | Peak ×1.45 applicability                                      |
 | `src/lib/transitNetwork.ts`    | Dijkstra path length / snap / merge                           |
-| `src/lib/transitPlanner.ts`    | Nearest stops, 1.2 km / 8 km filters, ≤600 m interchange      |
+| `src/lib/transitPlanner.ts`    | Nearest stops, 500 m / 8 km filters, ≤600 m interchange       |
 | `src/lib/multimodalPlanner.ts` | Shortlist, ranking (price/time/balance), same-line preference |
 
 Prefer pure inputs → outputs. Mock OSRM at the enrichment boundary rather than hitting the public network in unit tests.
@@ -53,20 +53,21 @@ Prefer pure inputs → outputs. Mock OSRM at the enrichment boundary rather than
 
 Normative detail: [RFC-001-planner.md](./RFC-001-planner.md).
 
-| ID  | Invariant                | Expected                                                                             | Status  |
-| --- | ------------------------ | ------------------------------------------------------------------------------------ | ------- |
-| G1  | Monthly cost             | `oneWayCost × 2 × WFO_days × 4.33`                                                   | Covered |
-| G2  | Peak factor              | ×1.45 on motorcycle/ojek/car/TJ/Gojek legs; **not** on KRL/MRT/LRT/walk              | Covered |
-| G3  | P80 (road / mix summary) | ≈ P50 × 1.4                                                                          | Covered |
-| G4  | Walk unlock              | Pin > 1.2 km from stop → walk access disallowed                                      | Covered |
-| G5  | Ojek feeder              | Pin ≤ 8 km may use Gojek to stop                                                     | Covered |
-| G6  | Interchange              | Cross-system only with stops ≤ 600 m apart; inventing hubs forbidden                 | Covered |
-| G7  | Same-line preferred      | If boarding system reaches office within radii, no forced transfer                   | Covered |
-| G8  | Best price band          | Among plans within Rp 5,000 of cheapest, pick fastest                                | Covered |
-| G9  | Mix output               | Up to 3 recommendations with distinct signatures when possible                       | Covered |
-| G10 | Bogor → SCBD pattern     | KRL board Bogor → CBD alight candidates → last-mile Gojek/walk; cross-system skipped | Backlog |
-| G11 | OSRM failure             | Enrichment falls back to ~22 km/h straight-line estimate                             | Backlog |
-| G12 | Shortlist cap            | Pre-OSRM shortlist ≤ 28 plans                                                        | Backlog |
+| ID  | Invariant                 | Expected                                                                                    | Status  |
+| --- | ------------------------- | ------------------------------------------------------------------------------------------- | ------- |
+| G1  | Monthly cost              | `oneWayCost × 2 × WFO_days × 4.33`                                                          | Covered |
+| G2  | Peak factor               | ×1.45 on motorcycle/ojek/car/TJ/Gojek legs; **not** on KRL/MRT/LRT/walk                     | Covered |
+| G3  | P80 (road / mix summary)  | ≈ P50 × 1.4                                                                                 | Covered |
+| G4  | Walk unlock               | Pin > 500 m from stop → walk access disallowed; prefer Gojek feeder                         | Covered |
+| G13 | Nearest board             | Per system, board only the nearest in-radius stop (not top-3)                               | Covered |
+| G5  | Ojek feeder               | Pin ≤ 8 km may use Gojek to stop                                                            | Covered |
+| G6  | Interchange               | Cross-system only with stops ≤ 600 m apart; inventing hubs forbidden                        | Covered |
+| G7  | Same-line / transfer gate | Skip A→B only if A is **walk**-reachable; Gojek-distance allows MRT→TJ (≤5 legs)            | Covered |
+| G8  | Best price (VOT)          | Minimize `fare + Rp1,000/min × minutes` among non–door-Gojek plans; Gojek = Best time only  | Covered |
+| G9  | Mix output                | Up to 3 recommendations with distinct signatures when possible                              | Covered |
+| G10 | Bogor → SCBD pattern      | KRL board Bogor → CBD alight candidates → last-mile Gojek/walk; cross-system skipped        | Backlog |
+| G11 | OSRM failure              | Enrichment falls back to ~22 km/h straight-line estimate                                    | Backlog |
+| G12 | Shortlist cap             | Pre-OSRM shortlist ≤ 28; union of cheap/fast/balance quotas so fastest survives cheap flood | Covered |
 
 Use fixed lat/lng fixtures (e.g. office `(-6.2275, 106.8085)` for SCBD) and tiny synthetic stop/network GeoJSON in tests — not the full production catalog — unless a case specifically needs real corridor topology.
 

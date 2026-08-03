@@ -1,4 +1,10 @@
-import { INTERCHANGE_M, OJEK_FEEDER_M, WALK_UNLOCK_M } from "@/master/defaults"
+import {
+  ALIGHT_CANDIDATES,
+  BOARD_CANDIDATES,
+  INTERCHANGE_M,
+  OJEK_FEEDER_M,
+  WALK_UNLOCK_M,
+} from "@/master/defaults"
 import { haversineMeters } from "@/lib/routing"
 import type { LatLng, TransitStop, TransitSystem } from "@/types"
 
@@ -17,23 +23,22 @@ export function nearestStops(
     .slice(0, limit)
 }
 
-/** Board candidates: top 3 within walk OR within ojek radius */
+/** Board: nearest stop only within ojek radius (prefer closest over farther stations) */
 export function boardCandidates(
   home: LatLng,
   stops: TransitStop[],
   system: TransitSystem
 ): (TransitStop & { meters: number })[] {
-  const withinOjek = nearestStops(home, stops, system, 3, OJEK_FEEDER_M)
-  return withinOjek
+  return nearestStops(home, stops, system, BOARD_CANDIDATES, OJEK_FEEDER_M)
 }
 
-/** Alight candidates: top 5 within walk OR ojek radius of office */
+/** Alight: nearest stop only within ojek radius of office */
 export function alightCandidates(
   office: LatLng,
   stops: TransitStop[],
   system: TransitSystem
 ): (TransitStop & { meters: number })[] {
-  return nearestStops(office, stops, system, 5, OJEK_FEEDER_M)
+  return nearestStops(office, stops, system, ALIGHT_CANDIDATES, OJEK_FEEDER_M)
 }
 
 export function canWalkAccess(meters: number): boolean {
@@ -56,7 +61,7 @@ export function transitOnlyUnlocked(
   return nearHome && nearOffice
 }
 
-/** Same boarding system reaches office if any stop of that system is within ojek of office */
+/** Feeder reach: any stop of system within ojek of office (same-system last mile OK) */
 export function systemReachesOffice(
   office: LatLng,
   stops: TransitStop[],
@@ -64,6 +69,21 @@ export function systemReachesOffice(
 ): boolean {
   return stops.some(
     (s) => s.system === system && haversineMeters(office, s) <= OJEK_FEEDER_M
+  )
+}
+
+/**
+ * Walk reach: stop within walk unlock of office.
+ * Used to decide if a cross-system transfer is warranted — if the rider would
+ * already need Gojek from system A, allow A→B (e.g. MRT → TJ) for a closer stop.
+ */
+export function systemWalkReachesOffice(
+  office: LatLng,
+  stops: TransitStop[],
+  system: TransitSystem
+): boolean {
+  return stops.some(
+    (s) => s.system === system && haversineMeters(office, s) <= WALK_UNLOCK_M
   )
 }
 

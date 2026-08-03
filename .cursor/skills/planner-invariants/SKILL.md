@@ -36,18 +36,20 @@ Robustness Progress:
 
 Map the change to a golden (see [reference.md](reference.md)):
 
-| ID      | Lock                                                        |
-| ------- | ----------------------------------------------------------- |
-| G1      | Monthly cost `oneWayCost × 2 × WFO_days × 4.33`             |
-| G2      | Peak ×1.45 on road/TJ/ojek — not rail/walk                  |
-| G3      | P80 ≈ P50 × 1.4 (road/mix summaries)                        |
-| G4      | Walk unlock ≤ 1.2 km                                        |
-| G5      | Ojek feeder ≤ 8 km                                          |
-| G6      | Interchange ≤ 600 m; no invented hubs                       |
-| G7      | Same-line preferred (no forced transfer)                    |
-| G8      | Cheapest + Rp 5,000 → fastest                               |
-| G9      | Up to 3 mix recs, distinct signatures                       |
-| G10–G12 | Corridor pattern / OSRM fallback / shortlist ≤ 28 (backlog) |
+| ID      | Lock                                                          |
+| ------- | ------------------------------------------------------------- |
+| G1      | Monthly cost `oneWayCost × 2 × WFO_days × 4.33`               |
+| G2      | Peak ×1.45 on road/TJ/ojek — not rail/walk                    |
+| G3      | P80 ≈ P50 × 1.4 (road/mix summaries)                          |
+| G4      | Walk unlock ≤ 500 m (else Gojek)                              |
+| G13     | Board nearest stop only (not top-3)                           |
+| G5      | Ojek feeder ≤ 8 km                                            |
+| G6      | Interchange ≤ 600 m; no invented hubs                         |
+| G7      | Same-line preferred (no forced transfer)                      |
+| G8      | Best price = VOT among non–door-Gojek; Gojek = Best time only |
+| G9      | Up to 3 mix recs, distinct signatures                         |
+| G12     | Shortlist ≤ 28; quota union keeps fastest under cheap flood   |
+| G10–G11 | Corridor pattern / OSRM fallback (backlog)                    |
 
 If none fit, add a new `G#` row in `docs/TDD.md` and a test in `src/lib/__tests__/planner-goldens.test.ts`.
 
@@ -83,7 +85,7 @@ If only docs changed, still run `pnpm test` when goldens/status were touched.
 
 ## Anti-patterns
 
-- Changing ×1.45 / ×1.4 / 1.2 km / 8 km / 600 m / 28 / 4.33 without RFC + golden
+- Changing ×1.45 / ×1.4 / 500 m / 8 km / 600 m / 28 / 4.33 without RFC + golden
 - Inventing transfer hubs not present as co-located stops
 - Live OSRM or full map E2E as the only regression gate
 - Expanding scope into backend, auth, AI chat, or housing scrape “for robustness”

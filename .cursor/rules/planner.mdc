@@ -15,16 +15,20 @@ Truth rule: if code and `docs/RFC-001-planner.md` disagree, update the RFC in th
 | Peak road factor       | ×1.45 on Gojek / motorcycle / car / TJ — **not** KRL/MRT/LRT/walk |
 | P80 (road/mix summary) | ≈ P50 × 1.4                                                       |
 | Monthly cost           | `oneWayCost × 2 × WFO_days × 4.33`                                |
-| Walk unlock            | ≤ 1.2 km to stop                                                  |
+| Walk unlock            | ≤ 500 m to stop (else Gojek feeder)                               |
+| Board candidates       | nearest **1** stop per system                                     |
+| Alight candidates      | nearest **1** stop per system                                     |
 | Ojek feeder            | ≤ 8 km to stop                                                    |
 | Interchange            | ≤ 600 m between real stops; never invent hubs                     |
 | Pre-OSRM shortlist     | ≤ 28 plans                                                        |
-| Near-cheapest band     | cheapest + Rp 5,000 → pick fastest                                |
+| Near-cheapest band     | Rp 5,000 (shortlist hint)                                         |
+| Value of time          | Rp 1,000/min in Best price (`fare + VOT × minutes`)               |
+| VOT near-tie           | ≤ Rp 1,000 Δeffective → prefer lower fare                         |
 | OSRM failure           | straight-line ~22 km/h fallback                                   |
 
 ## Change discipline
 
 1. Prefer pure functions; mock OSRM at the enrichment boundary in unit tests.
-2. Add/adjust goldens in `src/lib/__tests__/planner-goldens.test.ts` (G1–G9 covered; G10–G12 backlog — see `docs/TDD.md`).
+2. Add/adjust goldens in `src/lib/__tests__/planner-goldens.test.ts` (see `docs/TDD.md`).
 3. Use tiny synthetic stop/network fixtures unless the case needs real corridor topology.
 4. `/admin` traffic factors live in localStorage master only — not multi-tenant auth.

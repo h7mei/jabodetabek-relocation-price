@@ -9,12 +9,14 @@ Harness: `pnpm test` → Vitest → `src/lib/__tests__/planner-goldens.test.ts`.
 | G1  | `commute.ts`           | `oneWayCost × 2 × WFO_days × 4.33`                               |
 | G2  | `traffic.ts`           | ×1.45 on motorcycle/ojek/car/TJ/Gojek; not KRL/MRT/LRT/walk      |
 | G3  | summaries              | P80 ≈ P50 × 1.4 for road/mix                                     |
-| G4  | `transitPlanner.ts`    | pin > 1.2 km → walk access disallowed                            |
+| G4  | `transitPlanner.ts`    | pin > 500 m → walk access disallowed; prefer Gojek               |
+| G13 | `transitPlanner.ts`    | board = nearest 1 stop only                                      |
 | G5  | `transitPlanner.ts`    | pin ≤ 8 km may use Gojek to stop                                 |
 | G6  | `transitPlanner.ts`    | cross-system only if stops ≤ 600 m; no invented hubs             |
 | G7  | `multimodalPlanner.ts` | boarding system reaches office within radii → no forced transfer |
-| G8  | `multimodalPlanner.ts` | among plans within Rp 5,000 of cheapest, pick fastest            |
+| G8  | `multimodalPlanner.ts` | Best price = VOT among non–door-Gojek; Gojek = Best time only    |
 | G9  | `multimodalPlanner.ts` | up to 3 recommendations with distinct signatures when possible   |
+| G12 | `multimodalPlanner.ts` | shortlist ≤ 28; fastest kept when cheap variants flood           |
 
 ## Backlog
 
@@ -22,7 +24,6 @@ Harness: `pnpm test` → Vitest → `src/lib/__tests__/planner-goldens.test.ts`.
 | --- | -------------------------------------------------------------------------- |
 | G10 | Bogor → SCBD: KRL board → CBD alight → last-mile; skip forced cross-system |
 | G11 | OSRM failure → ~22 km/h straight-line enrichment fallback                  |
-| G12 | Pre-OSRM shortlist ≤ 28 plans                                              |
 
 ## What not to test (v1)
 

@@ -14,12 +14,14 @@ import {
   canWalkAccess,
   findInterchanges,
   systemReachesOffice,
+  systemWalkReachesOffice,
   transitOnlyUnlocked,
 } from "@/lib/transitPlanner"
 import {
   OJEK_KMH,
-  PRICE_BAND_IDR,
   SHORTLIST_CAP,
+  VOT_IDR_PER_MIN,
+  VOT_TIE_BAND_IDR,
   WALK_M_PER_MIN,
 } from "@/master/defaults"
 import {
@@ -196,7 +198,21 @@ async function enrichGojekLegs(
   return { ...plan, legs: withFares }
 }
 
-function shortlist(plans: DraftPlan[]): DraftPlan[] {
+function draftFamily(plan: DraftPlan): string {
+  const ride = plan.legs
+    .map((l) => l.kind)
+    .filter(
+      (k) => k === "krl" || k === "mrt" || k === "lrt" || k === "transjakarta"
+    )
+  return ride.length ? ride.join("→") : plan.label
+}
+
+/**
+ * Pre-OSRM shortlist: union of top cheap / fast / balanced drafts.
+ * Exported for golden G12 — must not let one axis (e.g. many cheap TJ
+ * variants) consume the full cap before faster rail plans are considered.
+ */
+export function shortlist(plans: DraftPlan[]): DraftPlan[] {
   const uniq = new Map<string, DraftPlan>()
   for (const p of plans) {
     if (!uniq.has(p.signature)) uniq.set(p.signature, p)
@@ -217,44 +233,111 @@ function shortlist(plans: DraftPlan[]): DraftPlan[] {
       a.minutes / maxMins -
       (b.cost / maxCost + b.minutes / maxMins)
   )
+
+  const quota = Math.ceil(SHORTLIST_CAP / 3)
   const picked = new Map<string, DraftPlan>()
-  for (const arr of [byCost, byTime, byBal]) {
+  const familyCount = new Map<string, number>()
+  const takeFrom = (
+    arr: { p: DraftPlan; minutes: number; cost: number }[],
+    limit: number,
+    maxPerFamily: number
+  ) => {
+    let taken = 0
     for (const s of arr) {
-      if (picked.size >= SHORTLIST_CAP) break
+      if (taken >= limit || picked.size >= SHORTLIST_CAP) break
+      if (picked.has(s.p.signature)) continue
+      const fam = draftFamily(s.p)
+      const n = familyCount.get(fam) ?? 0
+      if (n >= maxPerFamily) continue
       picked.set(s.p.signature, s.p)
+      familyCount.set(fam, n + 1)
+      taken++
     }
   }
+  // Cap per ride-family so TJ floods cannot starve MRT→TJ transfers
+  for (const arr of [byCost, byTime, byBal]) takeFrom(arr, quota, 2)
+  for (const arr of [byTime, byCost, byBal]) takeFrom(arr, SHORTLIST_CAP, 4)
+
   return [...picked.values()].slice(0, SHORTLIST_CAP)
+}
+
+function isDoorToDoorGojek(plan: CommutePlan): boolean {
+  return (
+    plan.signature === "gojek:door" ||
+    (plan.legs.length === 1 && plan.legs[0]?.kind === "gojek")
+  )
+}
+
+function usesRail(plan: CommutePlan): boolean {
+  return plan.legs.some(
+    (l) => l.kind === "krl" || l.kind === "mrt" || l.kind === "lrt"
+  )
+}
+
+/** Prefer MRT mixes when available, else KRL, else LRT (Jakarta corridor bias). */
+function railTier(plan: CommutePlan): number {
+  if (plan.legs.some((l) => l.kind === "mrt")) return 3
+  if (plan.legs.some((l) => l.kind === "krl")) return 2
+  if (plan.legs.some((l) => l.kind === "lrt")) return 1
+  return 0
+}
+
+function gojekSpend(plan: CommutePlan): number {
+  return plan.legs
+    .filter((l) => l.kind === "gojek")
+    .reduce((s, l) => s + l.costIdr, 0)
+}
+
+function pickSorted(
+  plans: CommutePlan[],
+  cmp: (a: CommutePlan, b: CommutePlan) => number
+): CommutePlan {
+  return [...plans].sort(cmp)[0]
 }
 
 /** Exported for goldens G8/G9 — Best price / time / balance ranking */
 export function rankRecommendations(plans: CommutePlan[]): CommutePlan[] {
   if (!plans.length) return []
-  const byCost = [...plans].sort(
-    (a, b) =>
-      a.oneWayCostIdr - b.oneWayCostIdr || a.oneWayMinutes - b.oneWayMinutes
-  )
-  const cheapest = byCost[0].oneWayCostIdr
-  const priceBand = byCost.filter(
-    (p) => p.oneWayCostIdr <= cheapest + PRICE_BAND_IDR
-  )
-  const bestPrice = [...priceBand].sort(
-    (a, b) => a.oneWayMinutes - b.oneWayMinutes
-  )[0]
+  const effective = (p: CommutePlan) =>
+    p.oneWayCostIdr + VOT_IDR_PER_MIN * p.oneWayMinutes
 
-  const bestTime = [...plans].sort(
+  const mixPlans = plans.filter((p) => !isDoorToDoorGojek(p))
+  const pricePool = mixPlans.length ? mixPlans : plans
+
+  const maxTier = Math.max(0, ...pricePool.map(railTier))
+  const tierPool =
+    maxTier > 0 ? pricePool.filter((p) => railTier(p) === maxTier) : []
+  const railPool = pricePool.filter(usesRail)
+  const bestPricePool =
+    tierPool.length > 0 ? tierPool : railPool.length > 0 ? railPool : pricePool
+
+  // Fare-first; near-ties prefer less Gojek (MRT→TJ over MRT+long Gojek egress)
+  const bestPrice = pickSorted(bestPricePool, (a, b) => {
+    const fareDelta = a.oneWayCostIdr - b.oneWayCostIdr
+    if (Math.abs(fareDelta) > VOT_TIE_BAND_IDR) return fareDelta
+    const gj = gojekSpend(a) - gojekSpend(b)
+    if (gj !== 0) return gj
+    const ea = effective(a)
+    const eb = effective(b)
+    return ea - eb || fareDelta || a.oneWayMinutes - b.oneWayMinutes
+  })
+
+  const bestTime = pickSorted(
+    plans,
     (a, b) =>
       a.oneWayMinutes - b.oneWayMinutes || a.oneWayCostIdr - b.oneWayCostIdr
-  )[0]
+  )
 
-  const maxCost = Math.max(...plans.map((p) => p.oneWayCostIdr), 1)
-  const maxMins = Math.max(...plans.map((p) => p.oneWayMinutes), 1)
-  const bestBalance = [...plans].sort(
+  const balPool = pricePool
+  const maxCost = Math.max(...balPool.map((p) => p.oneWayCostIdr), 1)
+  const maxMins = Math.max(...balPool.map((p) => p.oneWayMinutes), 1)
+  const bestBalance = pickSorted(
+    balPool,
     (a, b) =>
       a.oneWayCostIdr / maxCost +
       a.oneWayMinutes / maxMins -
       (b.oneWayCostIdr / maxCost + b.oneWayMinutes / maxMins)
-  )[0]
+  )
 
   const out: CommutePlan[] = []
   const seen = new Set<string>()
@@ -344,7 +427,9 @@ function enumerateTransfers(
 ): DraftPlan[] {
   const plans: DraftPlan[] = []
   for (const sysA of TRANSIT_SYSTEMS) {
-    if (systemReachesOffice(office, stops, sysA)) continue
+    // Skip transfer only when sysA is already walkable to office; Gojek-distance
+    // still allows A→B (e.g. MRT Bundaran HI → TJ closer to office).
+    if (systemWalkReachesOffice(office, stops, sysA)) continue
     const loadedA = bySys.get(sysA)
     if (!loadedA) continue
     const boards = boardCandidates(home, stops, sysA)
@@ -354,15 +439,17 @@ function enumerateTransfers(
       if (sysB === sysA) continue
       const loadedB = bySys.get(sysB)
       if (!loadedB) continue
+      // Destination system must have a stop within ojek of office
       if (!systemReachesOffice(office, stops, sysB)) continue
 
       const pairs = findInterchanges(sysA, sysB, stops, office).slice(0, 3)
       if (!pairs.length) continue
 
-      for (const board of boards.slice(0, 2)) {
+      for (const board of boards) {
         for (const pair of pairs) {
           const alights = alightCandidates(office, stops, sysB)
-          for (const alight of alights.slice(0, 3)) {
+          for (const alight of alights) {
+            if (pair.b.id === alight.id) continue
             const accessModes = accessOptions(board, walkOnly)
             const egressModes = accessOptions(alight, walkOnly)
             if (!accessModes.length || !egressModes.length) continue
@@ -528,21 +615,33 @@ export async function planBestPriceMix(
   }
 
   if (!walkOnly) {
-    drafts.push(
-      ...enumerateTransfers(
-        home,
-        office,
-        stops,
-        bySys,
-        pricing,
-        traffic,
-        walkOnly
-      )
+    const xfers = enumerateTransfers(
+      home,
+      office,
+      stops,
+      bySys,
+      pricing,
+      traffic,
+      walkOnly
     )
+    // Keep cheapest draft per transfer family so shortlist cannot drop MRT→TJ
+    const cheapestXfer = new Map<string, DraftPlan>()
+    for (const d of xfers) {
+      const fam = draftFamily(d)
+      const prev = cheapestXfer.get(fam)
+      const sc = scoreDraft(d)
+      if (!prev || sc.cost < scoreDraft(prev).cost) cheapestXfer.set(fam, d)
+    }
+    drafts.push(...xfers)
     drafts.push(pureGojek(home, office, pricing, traffic))
+    drafts = shortlist(drafts)
+    for (const d of cheapestXfer.values()) {
+      if (drafts.length >= SHORTLIST_CAP) break
+      if (!drafts.some((x) => x.signature === d.signature)) drafts.push(d)
+    }
+  } else {
+    drafts = shortlist(drafts)
   }
-
-  drafts = shortlist(drafts)
   const enriched = await Promise.all(
     drafts.map((d) => enrichGojekLegs(d, traffic))
   )
@@ -569,9 +668,7 @@ export async function planForMode(
   wfoDays: number
 ): Promise<CommutePlan[]> {
   if (mode === "motorcycle" || mode === "ojek" || mode === "car") {
-    return [
-      await roadModePlan(home, office, mode, pricing, traffic, wfoDays),
-    ]
+    return [await roadModePlan(home, office, mode, pricing, traffic, wfoDays)]
   }
   if (mode === "transit") {
     const stops = allStops(systems)

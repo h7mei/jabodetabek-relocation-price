@@ -100,7 +100,7 @@ Open app
   → Export decision brief (`.txt` download)
 ```
 
-\* Transit unlocks when both office and home are within ~1.2 km of known PT stops.
+\* Transit unlocks when both office and home are within ~500 m of known PT stops.
 
 ---
 
@@ -136,7 +136,7 @@ Open app
 | F14 | P80 ≈ P50 × 1.4 for road-mode summaries                                                                                                        | Must     |
 | F15 | Monthly = round-trip × WFO days × 4.33 weeks                                                                                                   | Must     |
 | F16 | **Best price mix**: see [RFC-001](./RFC-001-planner.md) — same-line board/alight + walk/ojek last mile; up to 3 plans (price / time / balance) | Must     |
-| F17 | **Transit only**: unlocked when both pins are ≤1.2 km from known stops; walk-access itinerary (no ojek feeders)                                | Must     |
+| F17 | **Transit only**: unlocked when both pins are ≤500 m from known stops; walk-access itinerary (no ojek feeders)                                 | Must     |
 | F18 | Heuristic fares (Gojek-like + JakLingko-style) — clearly framed as estimates                                                                   | Must     |
 | F19 | OSRM failure fallback (straight-line ~22 km/h proxy)                                                                                           | Should   |
 
@@ -196,7 +196,7 @@ Validation gate: complete **15–20 interviews** per [VALIDATION.md](./VALIDATIO
 
 | Constraint                | Value            |
 | ------------------------- | ---------------- |
-| Walk / transit unlock     | ≤ 1.2 km to stop |
+| Walk / transit unlock     | ≤ 500 m to stop (else Gojek ≤ 8 km) |
 | Ojek feeder to stop       | ≤ 8 km           |
 | Move-home click threshold | 400 m            |
 | Max homes                 | unlimited        |
@@ -311,7 +311,7 @@ Quick reference for product readers:
 | Peak road factor      | 1.45                  |
 | P80 factor (road)     | 1.4 × P50             |
 | Weeks / month         | 4.33                  |
-| Walk / transit unlock | ≤ 1.2 km to stop      |
+| Walk / transit unlock | ≤ 500 m to stop       |
 | Ojek feeder           | ≤ 8 km                |
 | Interchange max walk  | 600 m                 |
 | Max homes             | unlimited             |

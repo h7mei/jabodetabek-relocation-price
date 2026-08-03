@@ -1,6 +1,19 @@
 import { formatIdr } from "@/lib/commute"
 import { COMMUTE_MODE_LABELS, type Pin, type RankedHomeResult } from "@/types"
 
+function appendPlan(lines: string[], p: RankedHomeResult["primary"]) {
+  lines.push(`   Plan: ${p.label}`)
+  lines.push(`   P50 one-way: ${p.p50Minutes} min | P80: ${p.p80Minutes} min`)
+  lines.push(
+    `   Transport: ${formatIdr(p.monthlyCostIdr)}/mo (${p.monthlyHours} h) | day RT ${formatIdr(p.dailyRtCostIdr)}`
+  )
+  for (const leg of p.legs) {
+    lines.push(
+      `     • ${leg.label}: ${Math.round(leg.minutes)} min, ${formatIdr(leg.costIdr)}`
+    )
+  }
+}
+
 export function buildDecisionBrief(opts: {
   candidateName?: string
   company?: string
@@ -21,23 +34,25 @@ export function buildDecisionBrief(opts: {
   )
   lines.push(`WFO days / week: ${opts.wfoDays}`)
   lines.push("")
-  lines.push("Ranked homes (by monthly transport cost)")
+  lines.push("Ranked homes (by Best price monthly transport cost)")
   lines.push("-".repeat(48))
 
   opts.ranked.forEach((r, i) => {
-    const p = r.primary
     lines.push("")
     lines.push(`${i + 1}. ${r.home.label}`)
     lines.push(`   Mode: ${COMMUTE_MODE_LABELS[r.mode]}`)
-    lines.push(`   P50 one-way: ${p.p50Minutes} min | P80: ${p.p80Minutes} min`)
-    lines.push(
-      `   Transport: ${formatIdr(p.monthlyCostIdr)}/mo (${p.monthlyHours} h) | day RT ${formatIdr(p.dailyRtCostIdr)}`
-    )
-    lines.push(`   Plan: ${p.label}`)
-    for (const leg of p.legs) {
-      lines.push(
-        `     • ${leg.label}: ${Math.round(leg.minutes)} min, ${formatIdr(leg.costIdr)}`
-      )
+    const plans =
+      r.plans.length > 0
+        ? r.plans
+        : r.primary.signature !== "none"
+          ? [r.primary]
+          : []
+    if (!plans.length) {
+      lines.push("   No plan")
+      return
+    }
+    for (const p of plans) {
+      appendPlan(lines, p)
     }
   })
 
@@ -49,6 +64,9 @@ export function buildDecisionBrief(opts: {
   )
   lines.push(
     "not live Grab/Google ETAs, live GTFS schedules, or live ride-hailing quotes."
+  )
+  lines.push(
+    "Best price = lowest fare among MRT mixes when available (MRT→TJ last mile OK, up to 5 legs). Door-to-door Gojek is Best time only."
   )
   lines.push(`Peak road/TJ factor ×${peak}; rail and walk are unfactored.`)
   lines.push("")

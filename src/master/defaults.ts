@@ -87,16 +87,26 @@ export const MASTER_STORAGE_KEY = "relocation-maps:master-v1"
 export const JAKARTA_CENTER: [number, number] = [106.8272, -6.1754]
 export const DEFAULT_ZOOM = 11
 
-export const WALK_UNLOCK_M = 1_200
+/** Walk to PT stop only when pin ≤ this distance; farther feeders prefer Gojek */
+export const WALK_UNLOCK_M = 500
 export const OJEK_FEEDER_M = 8_000
 export const MOVE_HOME_M = 400
 export const INTERCHANGE_M = 600
 export const VERTEX_MERGE_M = 120
 export const SNAP_MAX_M = 2_500
+/** Board: nearest stop only (prefer closest PT over farther-but-faster stations) */
+export const BOARD_CANDIDATES = 1
+/** Alight: nearest stop only (same nearest-stop preference as board) */
+export const ALIGHT_CANDIDATES = 1
 export const WEEKS_PER_MONTH = 4.33
 export const WALK_M_PER_MIN = 80
 export const TRANSIT_M_PER_MIN = 350
 export const OJEK_KMH = 22
 export const SHORTLIST_CAP = 28
+/** Near-cheapest fare band (legacy / shortlist hints); Best price uses VOT */
 export const PRICE_BAND_IDR = 5_000
+/** Value of time for Best price: minimize fare + VOT × minutes */
+export const VOT_IDR_PER_MIN = 1_000
+/** If two plans’ effective costs differ by ≤ this, prefer lower fare (avoid micro-VOT flips) */
+export const VOT_TIE_BAND_IDR = 1_000
 export const DEFAULT_WFO_DAYS = 3

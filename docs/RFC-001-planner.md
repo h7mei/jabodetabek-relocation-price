@@ -4,7 +4,7 @@
 | ---------------- | ----------------------------------------------------------------------------------------- |
 | **Status**       | Accepted (MVP)                                                                            |
 | **Product**      | Jabodetabek Relocation Price                                                              |
-| **Last updated** | 2026-08-01                                                                                |
+| **Last updated** | 2026-08-03                                                                                |
 | **Related**      | [PRD.md](./PRD.md), [TDD.md](./TDD.md), [public/data/README.md](../public/data/README.md) |
 
 **Truth rule:** when code and this RFC disagree, update this RFC in the same change as the planner. Product acceptance stays in the PRD; math and routing contracts live here.
@@ -40,14 +40,16 @@ Build a **client-only** heuristic multimodal planner over static transit GeoJSON
 | P80 factor (road / mix summaries)  | **1.4** × P50 default (editable via `/admin` → `master.traffic.p80Factor`) |
 | Weeks / month                      | 4.33                                                                       |
 | Interchange max walk               | 600 m                                                                      |
-| Home board candidates (per system) | top 3 nearest                                                              |
-| Office alight candidates           | top 5 nearest                                                              |
-| Near-cheapest price band           | cheapest + Rp 5,000 → pick fastest                                         |
+| Home board candidates (per system) | **nearest 1** only (prefer closest stop)                                   |
+| Office alight candidates           | **nearest 1** only (prefer closest stop)                                   |
+| Near-cheapest price band           | cheapest + Rp 5,000 (shortlist diversity hint only)                        |
+| Value of time (Best price)         | **Rp 1,000 / min** — Best price minimizes `fare + VOT × minutes`           |
+| VOT near-tie band                  | If                                                                         | Δeffective | ≤ **Rp 1,000**, prefer **lower fare** |
 | Enumeration shortlist before OSRM  | 28 plans                                                                   |
 | Walk speed                         | 80 m/min                                                                   |
 | Transit ride speed (along network) | 350 m/min                                                                  |
 | Ojek speed proxy                   | 22 km/h                                                                    |
-| Walk / transit unlock radius       | ≤ 1.2 km to stop                                                           |
+| Walk / transit unlock radius       | ≤ 500 m to stop (farther → Gojek feeder)                                   |
 | Ojek feeder to stop                | ≤ 8 km                                                                     |
 | Move-home click threshold          | 400 m                                                                      |
 | Max homes                          | unlimited                                                                  |
@@ -66,11 +68,11 @@ oneWayCost × 2 × WFO_days × 4.33
 
 ## 3. Modes
 
-| Mode                        | Pipeline                                                                                   |
-| --------------------------- | ------------------------------------------------------------------------------------------ |
-| Motorcycle / ojek / car     | Single OSRM driving route × peak 1.45; P80 ≈ P50 × 1.4                                     |
-| Transit only                | Walk-access planner (no ojek feeders); unlock when both pins within ~1.2 km of known stops |
-| Best price mix (`cheapest`) | Multimodal enumeration → shortlist → OSRM enrich Gojek legs → up to 3 recs                 |
+| Mode                        | Pipeline                                                                                  |
+| --------------------------- | ----------------------------------------------------------------------------------------- |
+| Motorcycle / ojek / car     | Single OSRM driving route × peak 1.45; P80 ≈ P50 × 1.4                                    |
+| Transit only                | Walk-access planner (no ojek feeders); unlock when both pins within ~500 m of known stops |
+| Best price mix (`cheapest`) | Multimodal enumeration → shortlist → OSRM enrich Gojek legs → up to 3 recs                |
 
 ---
 
@@ -79,7 +81,7 @@ oneWayCost × 2 × WFO_days × 4.33
 ```text
 1. Enumerate candidate plans (heuristic meters / network times)
 2. Deduplicate by leg signature
-3. Shortlist diverse top ~28 (union of cheap / fast / balanced)
+3. Shortlist diverse top ~28 as a **union with per-axis quota**: take up to `ceil(28/3)` unique plans from each of cheapest / fastest / best-balance, then fill any remainder (preferring time). One axis must not consume the full cap (e.g. dozens of cheap TransJakarta stop-pair variants starving faster MRT/KRL).
 4. Enrich Gojek legs with OSRM road geometry + duration (parallel, cached)
 5. Re-score and pick Best price / Best time / Best balance
 ```
@@ -94,21 +96,21 @@ oneWayCost × 2 × WFO_days × 4.33
 
 ### 4.2 Access and egress
 
-| Mode             | When allowed                               | Time                                                           | Cost                          |
-| ---------------- | ------------------------------------------ | -------------------------------------------------------------- | ----------------------------- |
-| **Walk**         | Pin ≤ **1.2 km** from stop                 | `max(3, meters / 80 m·min⁻¹)`                                  | Rp 0                          |
-| **Gojek (ojek)** | Pin ≤ **8 km** from stop (or door-to-door) | haversine→22 km/h, then ×1.45; after OSRM: road duration ×1.45 | `base + km × perKm`           |
-| **Transit ride** | Along curated network polyline             | `max(5, path_m / 350 m·min⁻¹)`; TJ also ×1.45                  | `base + min(km, cap) × perKm` |
+| Mode             | When allowed                                                                  | Time                                                           | Cost                          |
+| ---------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------- |
+| **Walk**         | Pin ≤ **500 m** from stop                                                     | `max(3, meters / 80 m·min⁻¹)`                                  | Rp 0                          |
+| **Gojek (ojek)** | Pin ≤ **8 km** from stop (or door-to-door); preferred when walk exceeds 500 m | haversine→22 km/h, then ×1.45; after OSRM: road duration ×1.45 | `base + km × perKm`           |
+| **Transit ride** | Along curated network polyline                                                | `max(5, path_m / 350 m·min⁻¹)`; TJ also ×1.45                  | `base + min(km, cap) × perKm` |
 
 ### 4.3 Stop selection
 
 For each PT system independently:
 
-1. Top **3** nearest stops to **home** within walk and within ojek radius
-2. Top **5** nearest stops to **office** within walk and within ojek radius
+1. **Board:** the **single nearest** stop to **home** within ojek radius (≤ 8 km).
+2. **Alight:** the **single nearest** stop to **office** within ojek radius (same nearest-stop rule).
 3. Distance is **haversine**, not road distance
 
-Alight is **not** forced to a single nearest station or end-of-line terminus.
+Do not board/alight at a farther station even if the rail segment would be slightly shorter (e.g. prefer Bundaran HI over Bendungan Hilir when HI is closer to the office).
 
 ### 4.4 Same-system plans (preferred)
 
@@ -120,21 +122,26 @@ Alight is **not** forced to a single nearest station or end-of-line terminus.
 
 Enumerate access × egress × board × alight candidates, then dedupe.
 
-### 4.5 Cross-system transfers (only when needed)
+### 4.5 Cross-system transfers (when walk last-mile is not available)
 
-Use a second system **only if** the boarding system has **no** stop within ojek (8 km) or walk (1.2 km) of the office.
+Use a second system when the boarding system has **no stop within walk unlock (500 m)** of the office — even if a stop is within ojek range. That unlocks cheaper last miles such as **MRT → walk transfer → TransJakarta → nearer halte** (up to **5 legs**) instead of a long Gojek from Bundaran HI.
 
-When required:
+Still require:
 
 1. Real interchange: two stops of different systems within **≤ 600 m**
 2. Prefer pair closer to the **office**
-3. Legs: ride A → walk/short Gojek A→B → ride B → Walk|Gojek → office
+3. Destination system has a stop within **ojek (8 km)** of the office
+4. Legs: `[access] → ride A → transfer walk/Gojek → ride B → egress`
+
+**Skip transfer** when system A is already walkable to the office.
 
 **Forbidden:** inventing hubs (e.g. fake “MRT at St. Cawang”). Drop the candidate if no co-located pair exists.
 
 ### 4.6 Pure Gojek baseline
 
-Always include one door-to-door Gojek plan so Best time can select it when rail+feeders are slower.
+Always include one door-to-door Gojek plan so **Best time** can select it when rail+feeders are slower.
+
+Door-to-door Gojek is **excluded** from **Best price** and **Best balance** pools (unless it is the only plan). Otherwise the mix collapses to Gojek whenever a short road trip beats rail on VOT.
 
 ### 4.7 Network pathfinding
 
@@ -149,11 +156,13 @@ For a ride on one system between two stops:
 
 ### 4.8 Ranking
 
-| Kind             | Rule                                                                      |
-| ---------------- | ------------------------------------------------------------------------- |
-| **Best price**   | Among plans within **Rp 5,000** of cheapest one-way, pick **fastest**     |
-| **Best time**    | Lowest one-way minutes; ties by cost; distinct signature if possible      |
-| **Best balance** | Minimize `cost/maxCost + minutes/maxMins`; distinct signature if possible |
+| Kind             | Rule                                                                                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Best price**   | Prefer **MRT** mixes if any (else KRL, else LRT); then **lowest fare**. Allows **MRT→TJ** (≤5 legs) over MRT+long Gojek. Door-Gojek excluded. |
+| **Best time**    | Lowest one-way minutes (**Gojek baseline allowed**); ties by cost                                                                             |
+| **Best balance** | All non–door-Gojek mixes; minimize `cost/maxCost + minutes/maxMins`                                                                           |
+
+Rationale: when Bundaran HI is not walkable, transfer to TJ for a nearer halte (more steps OK) is usually cheaper than Gojek from HI.
 
 ### 4.9 OSRM enrichment
 
